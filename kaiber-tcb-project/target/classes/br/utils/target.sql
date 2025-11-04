@@ -5,20 +5,20 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema KaiberP
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema KaiberP
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `KaiberP` ;
 SHOW WARNINGS;
-USE `mydb` ;
+USE `KaiberP` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`site`
+-- Table `KaiberP`.`site`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`site` (
+CREATE TABLE IF NOT EXISTS `KaiberP`.`site` (
   `idsite` INT NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `cidade` VARCHAR(45) NOT NULL,
@@ -31,9 +31,9 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Rochas`
+-- Table `KaiberP`.`Rochas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Rochas` (
+CREATE TABLE IF NOT EXISTS `KaiberP`.`Rochas` (
   `idRochas` INT NOT NULL AUTO_INCREMENT,
   `tipo` VARCHAR(45) NOT NULL,
   `dureza` VARCHAR(45) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Rochas` (
   INDEX `fk_Rochas_site_idx` (`site_idsite` ASC, `site_nome` ASC, `site_cidade` ASC, `site_pais` ASC, `site_propriedadeprivada` ASC) VISIBLE,
   CONSTRAINT `fk_Rochas_site`
     FOREIGN KEY (`site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
-    REFERENCES `mydb`.`site` (`idsite` , `nome` , `cidade` , `pais` , `propriedadeprivada`)
+    REFERENCES `KaiberP`.`site` (`idsite` , `nome` , `cidade` , `pais` , `propriedadeprivada`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -58,9 +58,9 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `mydb`.`minerais`
+-- Table `KaiberP`.`minerais`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`minerais` (
+CREATE TABLE IF NOT EXISTS `KaiberP`.`minerais` (
   `idminerais` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `tipo` VARCHAR(45) NOT NULL,
   `dureza` FLOAT NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`minerais` (
   INDEX `fk_minerais_site1_idx` (`site_idsite` ASC, `site_nome` ASC, `site_cidade` ASC, `site_pais` ASC, `site_propriedadeprivada` ASC) VISIBLE,
   CONSTRAINT `fk_minerais_site1`
     FOREIGN KEY (`site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
-    REFERENCES `mydb`.`site` (`idsite` , `nome` , `cidade` , `pais` , `propriedadeprivada`)
+    REFERENCES `KaiberP`.`site` (`idsite` , `nome` , `cidade` , `pais` , `propriedadeprivada`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -84,18 +84,18 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `mydb`.`dureza`
+-- Table `KaiberP`.`dureza`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`dureza` (
+CREATE TABLE IF NOT EXISTS `KaiberP`.`dureza` (
 )
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `mydb`.`user`
+-- Table `KaiberP`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`user` (
+CREATE TABLE IF NOT EXISTS `KaiberP`.`user` (
   `iduser` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   `instituicao` VARCHAR(45) NOT NULL,
@@ -106,9 +106,9 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `mydb`.`user_has_minerais`
+-- Table `KaiberP`.`user_has_minerais`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`user_has_minerais` (
+CREATE TABLE IF NOT EXISTS `KaiberP`.`user_has_minerais` (
   `user_iduser` INT NOT NULL,
   `user_nome` VARCHAR(45) NOT NULL,
   `user_instituicao` VARCHAR(45) NOT NULL,
@@ -129,12 +129,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user_has_minerais` (
   INDEX `fk_user_has_minerais_user1_idx` (`user_iduser` ASC, `user_nome` ASC, `user_instituicao` ASC, `user_cargo` ASC) VISIBLE,
   CONSTRAINT `fk_user_has_minerais_user1`
     FOREIGN KEY (`user_iduser` , `user_nome` , `user_instituicao` , `user_cargo`)
-    REFERENCES `mydb`.`user` (`iduser` , `nome` , `instituicao` , `cargo`)
+    REFERENCES `KaiberP`.`user` (`iduser` , `nome` , `instituicao` , `cargo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_minerais_minerais1`
     FOREIGN KEY (`minerais_idminerais` , `minerais_tipo` , `minerais_dureza` , `minerais_cor` , `minerais_brilho` , `minerais_toxicidade` , `minerais_site_idsite` , `minerais_site_nome` , `minerais_site_cidade` , `minerais_site_pais` , `minerais_site_propriedadeprivada`)
-    REFERENCES `mydb`.`minerais` (`idminerais` , `tipo` , `dureza` , `cor` , `brilho` , `toxicidade` , `site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
+    REFERENCES `KaiberP`.`minerais` (`idminerais` , `tipo` , `dureza` , `cor` , `brilho` , `toxicidade` , `site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -142,9 +142,9 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `mydb`.`user_has_Rochas`
+-- Table `KaiberP`.`user_has_Rochas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`user_has_Rochas` (
+CREATE TABLE IF NOT EXISTS `KaiberP`.`user_has_Rochas` (
   `user_iduser` INT NOT NULL,
   `user_nome` VARCHAR(45) NOT NULL,
   `user_instituicao` VARCHAR(45) NOT NULL,
@@ -165,12 +165,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user_has_Rochas` (
   INDEX `fk_user_has_Rochas_user1_idx` (`user_iduser` ASC, `user_nome` ASC, `user_instituicao` ASC, `user_cargo` ASC) VISIBLE,
   CONSTRAINT `fk_user_has_Rochas_user1`
     FOREIGN KEY (`user_iduser` , `user_nome` , `user_instituicao` , `user_cargo`)
-    REFERENCES `mydb`.`user` (`iduser` , `nome` , `instituicao` , `cargo`)
+    REFERENCES `KaiberP`.`user` (`iduser` , `nome` , `instituicao` , `cargo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_Rochas_Rochas1`
     FOREIGN KEY (`Rochas_idRochas` , `Rochas_tipo` , `Rochas_dureza` , `Rochas_corPrincipal` , `Rochas_composicaoPrincipal` , `Rochas_isitgem` , `Rochas_site_idsite` , `Rochas_site_nome` , `Rochas_site_cidade` , `Rochas_site_pais` , `Rochas_site_propriedadeprivada`)
-    REFERENCES `mydb`.`Rochas` (`idRochas` , `tipo` , `dureza` , `corPrincipal` , `composicaoPrincipal` , `isitgem` , `site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
+    REFERENCES `KaiberP`.`Rochas` (`idRochas` , `tipo` , `dureza` , `corPrincipal` , `composicaoPrincipal` , `isitgem` , `site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
