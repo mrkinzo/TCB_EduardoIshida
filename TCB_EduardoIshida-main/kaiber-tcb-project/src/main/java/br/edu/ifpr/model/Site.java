@@ -1,4 +1,4 @@
-
+package br.edu.ifpr.model;
 public class Site {
     public String Name;
     public int sId;

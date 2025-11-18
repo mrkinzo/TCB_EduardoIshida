@@ -1,4 +1,4 @@
-
+package br.edu.ifpr.model;
 public class User {
     public String name;
     public String institution;
@@ -28,7 +28,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-}
-public class user {
-
 }

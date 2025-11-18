@@ -1,26 +1,33 @@
 package br.edu.ifpr.model.dao;
 
-import java.sql.*;
+import java.sql.Connection; // Import the corrected Rocha class
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ifpr.model.Rocha;
+
 public class RochaDAO {
 
-    private Connection conn;
+    private final Connection conn;
 
     public RochaDAO(Connection conn) {
         this.conn = conn;
     }
 
     public void inserir(Rocha r) throws SQLException {
-        String sql = "INSERT INTO rochas (tipo, dureza, corPrincipal, ignea, site_idsite) "
+        // SQL updated: 'ignea' replaced with 'gem'
+        String sql = "INSERT INTO rochas (tipo, dureza, corPrincipal, gem, site_idsite) "
                    + "VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, r.getTipo());
         stmt.setString(2, r.getDureza());
         stmt.setString(3, r.getCorPrincipal());
-        stmt.setBoolean(4, r.isÍgnea());
+        // Method updated: r.isIgnea() replaced with r.isGem()
+        stmt.setBoolean(4, r.isGem());
         stmt.setInt(5, r.getSiteIdSite());
         stmt.executeUpdate();
     }
@@ -37,7 +44,8 @@ public class RochaDAO {
                 rs.getString("tipo"),
                 rs.getString("dureza"),
                 rs.getString("corPrincipal"),
-                rs.getBoolean("ignea"),
+                // Column name updated: "ignea" replaced with "gem"
+                rs.getBoolean("gem"),
                 rs.getInt("site_idsite")
             );
             return r;
@@ -58,7 +66,8 @@ public class RochaDAO {
                 rs.getString("tipo"),
                 rs.getString("dureza"),
                 rs.getString("corPrincipal"),
-                rs.getBoolean("ignea"),
+                // Column name updated: "ignea" replaced with "gem"
+                rs.getBoolean("gem"),
                 rs.getInt("site_idsite")
             ));
         }
@@ -66,14 +75,15 @@ public class RochaDAO {
     }
 
     public void atualizar(Rocha r) throws SQLException {
-        String sql = "UPDATE rochas SET tipo=?, dureza=?, corPrincipal=?, ignea=?, site_idsite=? "
+ 
+        String sql = "UPDATE rochas SET tipo=?, dureza=?, corPrincipal=?, gem=?, site_idsite=? "
                    + "WHERE idrochas=?";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, r.getTipo());
         stmt.setString(2, r.getDureza());
         stmt.setString(3, r.getCorPrincipal());
-        stmt.setBoolean(4, r.isÍgnea());
+        stmt.setBoolean(4, r.isGem());
         stmt.setInt(5, r.getSiteIdSite());
         stmt.setInt(6, r.getIdRochas());
         stmt.executeUpdate();

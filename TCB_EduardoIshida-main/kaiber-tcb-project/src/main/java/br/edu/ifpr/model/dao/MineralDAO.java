@@ -1,12 +1,18 @@
 package br.edu.ifpr.model.dao;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ifpr.model.Mineral;
+
 public class MineralDAO {
 
-    private Connection conn;
+    private final Connection conn;
 
     public MineralDAO(Connection conn) {
         this.conn = conn;
@@ -14,7 +20,7 @@ public class MineralDAO {
 
     public void inserir(Mineral m) throws SQLException {
         String sql = "INSERT INTO minerais (tipo, dureza, cor, brilho, toxicidade, site_idsite) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, m.getTipo());
@@ -34,14 +40,13 @@ public class MineralDAO {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             Mineral m = new Mineral(
-                rs.getInt("idminerais"),
-                rs.getString("tipo"),
-                rs.getFloat("dureza"),
-                rs.getString("cor"),
-                rs.getString("brilho"),
-                rs.getString("toxicidade"),
-                rs.getInt("site_idsite")
-            );
+                    rs.getInt("idminerais"),
+                    rs.getString("tipo"),
+                    rs.getFloat("dureza"),
+                    rs.getString("cor"),
+                    rs.getString("brilho"),
+                    rs.getString("toxicidade"),
+                    rs.getInt("site_idsite"));
             return m;
         }
         return null;
@@ -56,21 +61,20 @@ public class MineralDAO {
 
         while (rs.next()) {
             lista.add(new Mineral(
-                rs.getInt("idminerais"),
-                rs.getString("tipo"),
-                rs.getFloat("dureza"),
-                rs.getString("cor"),
-                rs.getString("brilho"),
-                rs.getString("toxicidade"),
-                rs.getInt("site_idsite")
-            ));
+                    rs.getInt("idminerais"),
+                    rs.getString("tipo"),
+                    rs.getFloat("dureza"),
+                    rs.getString("cor"),
+                    rs.getString("brilho"),
+                    rs.getString("toxicidade"),
+                    rs.getInt("site_idsite")));
         }
         return lista;
     }
 
     public void atualizar(Mineral m) throws SQLException {
         String sql = "UPDATE minerais SET tipo=?, dureza=?, cor=?, brilho=?, toxicidade=?, site_idsite=? "
-                   + "WHERE idminerais=?";
+                + "WHERE idminerais=?";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, m.getTipo());
@@ -79,7 +83,6 @@ public class MineralDAO {
         stmt.setString(4, m.getBrilho());
         stmt.setString(5, m.getToxicidade());
         stmt.setInt(6, m.getSiteIdSite());
-        stmt.setInt(7, m.getIdMinerais());
         stmt.executeUpdate();
     }
 

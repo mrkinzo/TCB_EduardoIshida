@@ -1,4 +1,4 @@
-
+package br.edu.ifpr.model.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +10,7 @@ public class ConnectionFactory {
    private ConnectionFactory() {
    }
 
+   @SuppressWarnings("CallToPrintStackTrace")
    public static Connection getConnection() {
       try {
          if (conexao == null) {
