@@ -6,68 +6,82 @@ import br.edu.ifpr.controller.RochaController;
 import br.edu.ifpr.model.Emprestimo;
 import br.edu.ifpr.model.Mineral;
 import br.edu.ifpr.model.Rocha;
+import br.edu.ifpr.model.Site;
+import br.edu.ifpr.model.User;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+    private static Scanner LER = new Scanner(System.in);
+    private static MineralController mineralCtrl = new MineralController();
+    private static RochaController rochaCtrl = new RochaController();
+    private static UsuarioController usuarioCtrl = new UsuarioController();
+    private static EmprestimoController emprestimoCtrl = new EmprestimoController();
 
     public static void main(String[] args) {
-        System.out.println("--- Início do Simulação de Empréstimo ---");
+        User user = new User();
+        cadastroDeUsuario(user);
 
-        // Assumimos que a ConnectionFactory.java está configurada e funcionando.
-        MineralController mineralCtrl = new MineralController();
-        RochaController rochaCtrl = new RochaController();
-        EmprestimoController emprestimoCtrl = new EmprestimoController();
+        System.out.println("----====seja bem vindo " + user.getName() + " ----====");
 
-        try {
-            // --- 1. PREPARAÇÃO DE PRÉ-REQUISITOS (Necessário no BD) ---
-            // Você precisa garantir que o site e o usuário existam antes de rodar.
-            final int ID_SITE_EXISTENTE = 1; 
-            final int ID_USER_EXISTENTE = 1; 
+        System.out.println("Por favor, selecione uma opção()");
+        int x = LER.nextInt();
+        switch (x) {
+            case 1:
 
-            // --- 2. CADASTRO DE ITENS (Obtenção dos IDs AI) ---
-            System.out.println("\n[SETUP] 1. Cadastrando itens para obter IDs...");
-            
-            // Criação dos objetos sem o ID
-            Mineral m1 = new Mineral("Quartzo", 7.0f, "Incolor", "Vítreo", "Não", ID_SITE_EXISTENTE);
-            Rocha r1 = new Rocha("Granito", "Muito Dura", "Cinza", false, ID_SITE_EXISTENTE);
+                break;
+            case 2:
 
-            // O Controller chama o DAO, que insere no BD e ATUALIZA o ID no objeto m1/r1.
-            mineralCtrl.cadastrarMineral(m1); 
-            rochaCtrl.cadastrarRocha(r1);     
-            
-            // Agora, os IDs AI estão disponíveis nos objetos:
-            System.out.println("-> Mineral inserido com ID (AI): " + m1.getIdminerais()); 
-            System.out.println("-> Rocha inserida com ID (AI): " + r1.getIdRochas());
+                break;
+            case 3:
 
-            // --- 3. EXECUÇÃO DO FLUXO DE EMPRÉSTIMO ---
+                break;
+            case 4:
 
-            // A. Listas de Itens com seus IDs
-            List<Mineral> mineraisEmprestados = new ArrayList<>();
-            mineraisEmprestados.add(m1);
-            
-            List<Rocha> rochasEmprestadas = new ArrayList<>();
-            rochasEmprestadas.add(r1);
+                break;
+            case 5:
 
-            // B. Criação do Objeto Empréstimo
-            Emprestimo novoEmprestimo = new Emprestimo(
-                LocalDate.now(),                 
-                LocalDate.now().plusWeeks(3),    
-                ID_USER_EXISTENTE,               
-                mineraisEmprestados,             
-                rochasEmprestadas                
-            );
-
-            // C. Registro do Empréstimo (Transação)
-            System.out.println("\n[FLUXO] 2. Registrando Emprestimo (Transação BD)...");
-            emprestimoCtrl.cadastrarEmprestimo(novoEmprestimo);
-            
-            System.out.println("\n[SUCESSO] Empréstimo registrado. Verifique as tabelas user_has_emprestimo, emprestimo_has_minerais e emprestimo_has_Rochas no BD.");
-
-        } catch (Exception e) {
-            System.err.println("\nERRO CRÍTICO NA APLICAÇÃO:");
-            e.printStackTrace();
+                break;
+            default:
+                break;
         }
+    }
+
+    public static void cadastroDeUsuario(User user) {
+        user.setName(LER.next());
+        user.setInstitution(LER.next());
+        user.setRole(LER.next());
+        us.cadastrarUser(user);
+    }
+
+    public static void cadastrarMineral() {
+        
+    }
+
+    public static void cadastrarRocha() {
+
+        System.out.println("Cadastrando nova rocha:");
+        System.out.println("insire os dados da rocha: tipo, dureza, cor principal, é gema(true/false) e dados do site (nome, cidade, país, visitável(true/false))");
+        Rocha rocha = new Rocha();
+        rocha.setNa
+        rocha.setTipo(LER.next());
+        rocha.setDureza(LER.next());
+        rocha.setCorPrincipal(LER.next());
+        rocha.setGem(LER.nextBoolean());
+        Site site = new Site();
+        cadastrarSite(site);
+        rocha.setSite(site);
+        rochaCtrl.cadastrarRocha(rocha);
+    }
+
+    public static void cadastrarSite(Site site) {
+        site.setName(LER.next());
+        site.setCity(LER.next());
+        site.setCountry(LER.next());
+        site.setVisitable(LER.nextBoolean());
+        siteCtrl.cadastrarSite(site);
     }
 }

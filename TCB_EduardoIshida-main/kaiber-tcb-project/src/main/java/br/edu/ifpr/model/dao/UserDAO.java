@@ -1,21 +1,5 @@
-package br.edu.ifpr.model.dao;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import br.edu.ifpr.model.User;
-
-public class UserDAO {
-  
-  
-  public UserDAO() {
-
-  }
-
-  public static void cadastrarUser(User user) throws SQLException { 
-    String sqlUser = "INSERT INTO user(nome, insituicao,cargo) VALUES(?,?,?)";
-   
-    Connection con = ConnectionFactory.getConnection(); 
+public static void cadastrarUser(User user) throws SQLException { 
+    String sqlUser = "INSERT INTO user(nome, instituicao, cargo) VALUES(?,?,?)"; 
 
     try{ 
         PreparedStatement psUser = con.prepareStatement(sqlUser);
@@ -26,9 +10,7 @@ public class UserDAO {
         System.out.println("----BEM VINDO----");
     } catch (SQLException e) { 
         e.printStackTrace();
-    }
-   
-    finally {
+    } finally {
         if (con != null) {
             try {
                 con.close();
@@ -37,5 +19,4 @@ public class UserDAO {
             }
         }
     }
-  }
 }

@@ -3,7 +3,6 @@ public class User {
     public String name;
     public String institution;
     public String role;
-    public String password;
     public String getName() {
         return name;
     }
@@ -22,9 +21,7 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
-    public String getPassword() {
-        return password;
-    }
+
     public void setPassword(String password) {
         this.password = password;
     }

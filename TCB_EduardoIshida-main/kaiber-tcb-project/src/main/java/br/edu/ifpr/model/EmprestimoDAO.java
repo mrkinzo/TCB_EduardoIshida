@@ -1,8 +1,9 @@
 import java.sql.*;
 import java.util.List;
+import br.edu.ifpr.model.Mineral;
+import br.edu.ifpr.model.Rocha;
 
 public class EmprestimoDAO {
-
     private Connection conn;
 
     public EmprestimoDAO(Connection conn) {
@@ -11,8 +12,8 @@ public class EmprestimoDAO {
 
     public int realizarEmprestimo(
             int userId,
-            List<ItemMineral> minerais,
-            List<ItemRocha> rochas
+            List<Mineral> minerais,
+            List<Rocha> rochas
     ) throws SQLException {
 
         String sqlEmprestimo = 
@@ -46,11 +47,11 @@ public class EmprestimoDAO {
 
             // 2 — Inserir minerais
             try (PreparedStatement stmt = conn.prepareStatement(sqlMinerais)) {
-                for (ItemMineral m : minerais) {
+                for (Mineral m : minerais) {
                     stmt.setInt(1, emprestimoId);
                     stmt.setInt(2, userId);
-                    stmt.setInt(3, m.getId());
-                    stmt.setInt(4, m.getIdSite());
+                    stmt.setInt(3, m.getIdminerais());
+                    stmt.setInt(4, m.getSiteIdSite());
                     stmt.addBatch();
                 }
                 stmt.executeBatch();
@@ -58,11 +59,11 @@ public class EmprestimoDAO {
 
             // 3 — Inserir rochas
             try (PreparedStatement stmt = conn.prepareStatement(sqlRochas)) {
-                for (ItemRocha r : rochas) {
+                for (Rocha r : rochas) {
                     stmt.setInt(1, emprestimoId);
                     stmt.setInt(2, userId);
-                    stmt.setInt(3, r.getId());
-                    stmt.setInt(4, r.getIdSite());
+                    stmt.setInt(3, r.getIdRochas());
+                    stmt.setInt(4, r.getSiteIdSite());
                     stmt.addBatch();
                 }
                 stmt.executeBatch();

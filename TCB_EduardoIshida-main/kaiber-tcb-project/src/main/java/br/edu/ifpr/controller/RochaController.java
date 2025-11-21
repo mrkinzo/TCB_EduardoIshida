@@ -1,17 +1,92 @@
 package br.edu.ifpr.controller;
 
 import br.edu.ifpr.model.Rocha;
+import br.edu.ifpr.model.dao.ConnectionFactory;
 import br.edu.ifpr.model.dao.RochaDAO;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
 public class RochaController {
     private RochaDAO rochaDAO;
 
-    public rockaControler() {
-        this.rochaDAO = new RochaDAO();
+    public RochaController() {
+        Connection conn = ConnectionFactory.getConnection();
+        this.rochaDAO = new RochaDAO(conn);
     }
-    public static void CadastrarRocha(Rocha rocha) {
-      
-        RochaDAO.CadastrarRocha(rocha);
 
+    public void cadastrarRocha(Rocha rocha) {
+        try {
+            rochaDAO.inserir(rocha);
+            System.out.println("Rocha cadastrada com sucesso! ID: " + rocha.getIdRochas());
+        } catch (SQLException e) {
+            System.err.println("Erro ao cadastrar rocha: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public Rocha buscarRochaPorId(int id) {
+        try {
+            return rochaDAO.buscarPorId(id);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar rocha: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<Rocha> listarTodasRochas() {
+        try {
+            return rochaDAO.listarTodas();
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar rochas: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<Rocha> buscarRochasPorTipo(String tipo) {
+        try {
+            return rochaDAO.buscarPorTipo(tipo);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar rochas por tipo: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<Rocha> buscarGemas() {
+        try {
+            return rochaDAO.buscarGemas();
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar gemas: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void atualizarRocha(Rocha rocha) {
+        try {
+            rochaDAO.atualizar(rocha);
+            System.out.println("Rocha atualizada com sucesso!");
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar rocha: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void deletarRocha(int id) {
+        try {
+            rochaDAO.deletar(id);
+            System.out.println("Rocha deletada com sucesso!");
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar rocha: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public int contarTotalRochas() {
+        try {
+            return rochaDAO.contarTotal();
+        } catch (SQLException e) {
+            System.err.println("Erro ao contar rochas: " + e.getMessage());
+            return 0;
+        }
     }
 }
