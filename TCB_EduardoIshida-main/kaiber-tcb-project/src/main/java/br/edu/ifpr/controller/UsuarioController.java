@@ -10,6 +10,7 @@ public class UsuarioController {
     }
 
     public class CadastrarUser(User user) {
-      UserDAO 
+     user = new User();
+        UserDAO.CadastrarUser(user);
     }
 }

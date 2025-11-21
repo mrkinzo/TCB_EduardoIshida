@@ -11,6 +11,6 @@ private MineralDAO;
     public static void CadastrarMineral(Mineral mineral) {
 
         MineralDAO.CadastrarMineral(mineral);
-
+        
     }
 }
