@@ -3,24 +3,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import br.edu.ifpr.model.Mineral;
+import br.edu.ifpr.model.Rocha;
 
 public void inserir(Mineral m) throws SQLException {
-    String sql = "INSERT INTO minerais (tipo, dureza, cor, brilho, toxicidade, site_idsite) "
-            + "VALUES (?, ?, ?, ?, ?, ?)";
+    public void inserir(Rocha rocha) throws SQLException {
+        String sql = "INSERT INTO Rochas (tipo, dureza, corPrincipal, composicaoPrincipal, isitgem, " +
+                "site_idsite, site_nome, site_cidade, site_pais, site_propriedadeprivada) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-    stmt.setString(1, m.getTipo());
-    stmt.setFloat(2, m.getDureza());
-    stmt.setString(3, m.getCor());
-    stmt.setString(4, m.getBrilho());
-    stmt.setString(5, m.getToxicidade());
-    stmt.setInt(6, m.getSiteIdSite());
-    stmt.executeUpdate();
+        try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, rocha.getTipo());
+            stmt.setString(2, rocha.getDureza());
+            stmt.setString(3, rocha.getCorPrincipal());
+            stmt.setString(4, rocha.getComposicaoPrincipal());
+            stmt.setBoolean(5, rocha.isGem());
+            stmt.setInt(6, rocha.getSite().getsId());
+            stmt.setString(7, rocha.getSite().getNome());
+            stmt.setString(8, rocha.getSite().getCidade());
+            stmt.setString(9, rocha.getSite().getPais());
+            stmt.setString(10, rocha.getSite().getPropriedadePrivada());
+            stmt.executeUpdate();
 
-    // Obter o ID gerado
-    try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-        if (generatedKeys.next()) {
-            m.setIdminerais(generatedKeys.getInt(1));
+            // Obter o ID gerado
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    rocha.setIdRochas(generatedKeys.getInt(1));
+                }
+            }
         }
     }
     // Buscar mineral por ID

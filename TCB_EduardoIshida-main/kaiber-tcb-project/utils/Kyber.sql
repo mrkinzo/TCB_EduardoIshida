@@ -1,167 +1,121 @@
--- MySQL Workbench Synchronization
--- Generated: 2025-11-10 09:00
--- Model: New Model
--- Version: 1.0
--- Project: Name of the project
--- Author: Unknown
+-- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-CREATE SCHEMA IF NOT EXISTS `Kyber` DEFAULT CHARACTER SET utf8 ;
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema Kyber
+-- -----------------------------------------------------
 
--- First create the site table since other tables depend on it
+-- -----------------------------------------------------
+-- Schema Kyber
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Kyber` DEFAULT CHARACTER SET utf8mb3 ;
+USE `Kyber` ;
+
+-- -----------------------------------------------------
+-- Table `Kyber`.`site`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Kyber`.`site` (
-  `idsite` INT(11) NOT NULL,
-  `nome` VARCHAR(45) NOT NULL,
-  `cidade` VARCHAR(45) NOT NULL,
-  `pais` VARCHAR(45) NOT NULL,
-  `propriedadeprivada` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idsite`, `nome`, `cidade`, `pais`, `propriedadeprivada`),
+  `idsite` INT NOT NULL,
+  `nome` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `cidade` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `pais` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `propriedadeprivada` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  PRIMARY KEY (`idsite`),
   UNIQUE INDEX `idsite_UNIQUE` (`idsite` ASC) VISIBLE)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+DEFAULT CHARACTER SET = utf8mb3;
 
+
+-- -----------------------------------------------------
+-- Table `Kyber`.`Rochas`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Kyber`.`Rochas` (
-  `idRochas` INT(11) NOT NULL AUTO_INCREMENT,
-  `tipo` VARCHAR(45) NOT NULL,
-  `dureza` VARCHAR(45) NOT NULL,
-  `corPrincipal` VARCHAR(45) NOT NULL,
-  `composicaoPrincipal` VARCHAR(45) NOT NULL,
-  `isitgem` TINYINT(4) NOT NULL,
-  `site_idsite` INT(11) NOT NULL,
-  `site_nome` VARCHAR(45) NOT NULL,
-  `site_cidade` VARCHAR(45) NOT NULL,
-  `site_pais` VARCHAR(45) NOT NULL,
-  `site_propriedadeprivada` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idRochas`, `tipo`, `dureza`, `corPrincipal`, `composicaoPrincipal`, `isitgem`, `site_idsite`, `site_nome`, `site_cidade`, `site_pais`, `site_propriedadeprivada`),
+  `idRochas` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `tipo` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `dureza` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `corPrincipal` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `isitgem` TINYINT NOT NULL,
+  `site_idsite` INT NOT NULL,
+  PRIMARY KEY (`idRochas`, `site_idsite`),
   UNIQUE INDEX `idRochas_UNIQUE` (`idRochas` ASC) VISIBLE,
-  INDEX `fk_Rochas_site_idx` (`site_idsite` ASC, `site_nome` ASC, `site_cidade` ASC, `site_pais` ASC, `site_propriedadeprivada` ASC) VISIBLE,
-  CONSTRAINT `fk_Rochas_site`
-    FOREIGN KEY (`site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
-    REFERENCES `Kyber`.`site` (`idsite` , `nome` , `cidade` , `pais` , `propriedadeprivada`)
+  INDEX `fk_Rochas_site1_idx` (`site_idsite` ASC) VISIBLE,
+  CONSTRAINT `fk_Rochas_site1`
+    FOREIGN KEY (`site_idsite`)
+    REFERENCES `Kyber`.`site` (`idsite`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+DEFAULT CHARACTER SET = utf8mb3;
 
+
+-- -----------------------------------------------------
+-- Table `Kyber`.`minerais`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Kyber`.`minerais` (
-  `idminerais` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `tipo` VARCHAR(45) NOT NULL,
-  `dureza` FLOAT(11) NOT NULL,
-  `cor` VARCHAR(45) NOT NULL,
-  `brilho` VARCHAR(45) NOT NULL,
-  `toxicidade` VARCHAR(45) NOT NULL,
-  `site_idsite` INT(11) NOT NULL,
-  `site_nome` VARCHAR(45) NOT NULL,
-  `site_cidade` VARCHAR(45) NOT NULL,
-  `site_pais` VARCHAR(45) NOT NULL,
-  `site_propriedadeprivada` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idminerais`, `tipo`, `dureza`, `cor`, `brilho`, `toxicidade`, `site_idsite`, `site_nome`, `site_cidade`, `site_pais`, `site_propriedadeprivada`),
-  INDEX `fk_minerais_site1_idx` (`site_idsite` ASC, `site_nome` ASC, `site_cidade` ASC, `site_pais` ASC, `site_propriedadeprivada` ASC) VISIBLE,
-  CONSTRAINT `fk_minerais_site1`
-    FOREIGN KEY (`site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
-    REFERENCES `Kyber`.`site` (`idsite` , `nome` , `cidade` , `pais` , `propriedadeprivada`)
+  `idminerais` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `tipo` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `dureza` FLOAT NOT NULL,
+  `cor` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `brilho` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `toxicidade` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `site_idsite` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idminerais`, `site_idsite`),
+  INDEX `fk_minerais_site_idx` (`site_idsite` ASC) VISIBLE,
+  CONSTRAINT `fk_minerais_site`
+    FOREIGN KEY (`site_idsite`)
+    REFERENCES `Kyber`.`site` (`idsite`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+DEFAULT CHARACTER SET = utf8mb3;
 
-CREATE TABLE IF NOT EXISTS `Kyber`.`user` (
-  `iduser` INT(11) NOT NULL AUTO_INCREMENT,
+
+-- -----------------------------------------------------
+-- Table `Kyber`.`usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Kyber`.`usuario` (
+  `idusuario` INT NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `instituicao` VARCHAR(45) NOT NULL,
   `cargo` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`iduser`, `nome`, `instituicao`, `cargo`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+  PRIMARY KEY (`idusuario`))
+ENGINE = InnoDB;
 
--- Fixed: Removed duplicate columns and corrected data types
-CREATE TABLE IF NOT EXISTS `Kyber`.`user_has_Rochas` (
-  `user_iduser` INT(11) NOT NULL,
-  `user_nome` VARCHAR(45) NOT NULL,
-  `user_instituicao` VARCHAR(45) NOT NULL,
-  `user_cargo` VARCHAR(45) NOT NULL,
-  `Rochas_idRochas` INT(11) NOT NULL,
-  `Rochas_tipo` VARCHAR(45) NOT NULL,
-  `Rochas_dureza` VARCHAR(45) NOT NULL,
-  `Rochas_corPrincipal` VARCHAR(45) NOT NULL,
-  `Rochas_composicaoPrincipal` VARCHAR(45) NOT NULL,
-  `Rochas_isitgem` TINYINT(4) NOT NULL,
-  `Rochas_site_idsite` INT(11) NOT NULL,
-  `Rochas_site_nome` VARCHAR(45) NOT NULL,
-  `Rochas_site_cidade` VARCHAR(45) NOT NULL,
-  `Rochas_site_pais` VARCHAR(45) NOT NULL,
-  `Rochas_site_propriedadeprivada` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`user_iduser`, `user_nome`, `user_instituicao`, `user_cargo`, `Rochas_idRochas`, `Rochas_tipo`, `Rochas_dureza`, `Rochas_corPrincipal`, `Rochas_composicaoPrincipal`, `Rochas_isitgem`, `Rochas_site_idsite`, `Rochas_site_nome`, `Rochas_site_cidade`, `Rochas_site_pais`, `Rochas_site_propriedadeprivada`),
-  INDEX `fk_user_has_Rochas_Rochas1_idx` (`Rochas_idRochas` ASC, `Rochas_tipo` ASC, `Rochas_dureza` ASC, `Rochas_corPrincipal` ASC, `Rochas_composicaoPrincipal` ASC, `Rochas_isitgem` ASC, `Rochas_site_idsite` ASC, `Rochas_site_nome` ASC, `Rochas_site_cidade` ASC, `Rochas_site_pais` ASC, `Rochas_site_propriedadeprivada` ASC) VISIBLE,
-  INDEX `fk_user_has_Rochas_user1_idx` (`user_iduser` ASC, `user_nome` ASC, `user_instituicao` ASC, `user_cargo` ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_Rochas_user1`
-    FOREIGN KEY (`user_iduser` , `user_nome` , `user_instituicao` , `user_cargo`)
-    REFERENCES `Kyber`.`user` (`iduser` , `nome` , `instituicao` , `cargo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_Rochas_Rochas1`
-    FOREIGN KEY (`Rochas_idRochas` , `Rochas_tipo` , `Rochas_dureza` , `Rochas_corPrincipal` , `Rochas_composicaoPrincipal` , `Rochas_isitgem` , `Rochas_site_idsite` , `Rochas_site_nome` , `Rochas_site_cidade` , `Rochas_site_pais` , `Rochas_site_propriedadeprivada`)
-    REFERENCES `Kyber`.`Rochas` (`idRochas` , `tipo` , `dureza` , `corPrincipal` , `composicaoPrincipal` , `isitgem` , `site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
-CREATE TABLE IF NOT EXISTS `Kyber`.`user_has_minerais` (
-  `user_iduser` INT(11) NOT NULL,
-  `user_nome` VARCHAR(45) NOT NULL,
-  `user_instituicao` VARCHAR(45) NOT NULL,
-  `user_cargo` VARCHAR(45) NOT NULL,
-  `minerais_idminerais` INT(10) UNSIGNED NOT NULL,
-  `minerais_tipo` VARCHAR(45) NOT NULL,
-  `minerais_dureza` FLOAT(11) NOT NULL,
-  `minerais_cor` VARCHAR(45) NOT NULL,
-  `minerais_brilho` VARCHAR(45) NOT NULL,
-  `minerais_toxicidade` VARCHAR(45) NOT NULL,
-  `minerais_site_idsite` INT(11) NOT NULL,  -- CHANGED FROM VARCHAR(45) TO INT(11)
-  `minerais_site_nome` VARCHAR(45) NOT NULL,
-  `minerais_site_cidade` VARCHAR(45) NOT NULL,
-  `minerais_site_pais` VARCHAR(45) NOT NULL,
-  `minerais_site_propriedadeprivada` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`user_iduser`, `user_nome`, `user_instituicao`, `user_cargo`, `minerais_idminerais`, `minerais_tipo`, `minerais_dureza`, `minerais_cor`, `minerais_brilho`, `minerais_toxicidade`, `minerais_site_idsite`, `minerais_site_nome`, `minerais_site_cidade`, `minerais_site_pais`, `minerais_site_propriedadeprivada`),
-  INDEX `fk_user_has_minerais_minerais1_idx` (`minerais_idminerais` ASC, `minerais_tipo` ASC, `minerais_dureza` ASC, `minerais_cor` ASC, `minerais_brilho` ASC, `minerais_toxicidade` ASC, `minerais_site_idsite` ASC, `minerais_site_nome` ASC, `minerais_site_cidade` ASC, `minerais_site_pais` ASC, `minerais_site_propriedadeprivada` ASC) VISIBLE,
-  INDEX `fk_user_has_minerais_user1_idx` (`user_iduser` ASC, `user_nome` ASC, `user_instituicao` ASC, `user_cargo` ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_minerais_user1`
-    FOREIGN KEY (`user_iduser` , `user_nome` , `user_instituicao` , `user_cargo`)
-    REFERENCES `Kyber`.`user` (`iduser` , `nome` , `instituicao` , `cargo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_minerais_minerais1`
-    FOREIGN KEY (`minerais_idminerais` , `minerais_tipo` , `minerais_dureza` , `minerais_cor` , `minerais_brilho` , `minerais_toxicidade` , `minerais_site_idsite` , `minerais_site_nome` , `minerais_site_cidade` , `minerais_site_pais` , `minerais_site_propriedadeprivada`)
-    REFERENCES `Kyber`.`minerais` (`idminerais` , `tipo` , `dureza` , `cor` , `brilho` , `toxicidade` , `site_idsite` , `site_nome` , `site_cidade` , `site_pais` , `site_propriedadeprivada`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- Fixed emprestimo tables (removed from your original script)
+-- -----------------------------------------------------
+-- Table `Kyber`.`emprestimo`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Kyber`.`emprestimo` (
-  `idemprestimo` INT NOT NULL AUTO_INCREMENT,
-  `data_emprestimo` DATE NOT NULL,
-  `data_devolucao` DATE NULL,
-  `usuario_idusuario` INT(11) NOT NULL,
+  `idemprestimo` INT NOT NULL,
+  `dataEmp` VARCHAR(45) NOT NULL,
+  `dataDev` VARCHAR(45) NOT NULL,
+  `usuario_idusuario` INT NOT NULL,
   PRIMARY KEY (`idemprestimo`, `usuario_idusuario`),
   INDEX `fk_emprestimo_usuario1_idx` (`usuario_idusuario` ASC) VISIBLE,
   CONSTRAINT `fk_emprestimo_usuario1`
     FOREIGN KEY (`usuario_idusuario`)
-    REFERENCES `Kyber`.`user` (`iduser`)
+    REFERENCES `Kyber`.`usuario` (`idusuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `Kyber`.`emprestimo_has_minerais`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Kyber`.`emprestimo_has_minerais` (
   `emprestimo_idemprestimo` INT NOT NULL,
   `emprestimo_usuario_idusuario` INT NOT NULL,
   `minerais_idminerais` INT UNSIGNED NOT NULL,
-  `minerais_site_idsite` INT(11) NOT NULL,  -- CHANGED FROM VARCHAR(45) TO INT(11)
+  `minerais_site_idsite` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`emprestimo_idemprestimo`, `emprestimo_usuario_idusuario`, `minerais_idminerais`, `minerais_site_idsite`),
   INDEX `fk_emprestimo_has_minerais_minerais1_idx` (`minerais_idminerais` ASC, `minerais_site_idsite` ASC) VISIBLE,
   INDEX `fk_emprestimo_has_minerais_emprestimo1_idx` (`emprestimo_idemprestimo` ASC, `emprestimo_usuario_idusuario` ASC) VISIBLE,
@@ -176,6 +130,31 @@ CREATE TABLE IF NOT EXISTS `Kyber`.`emprestimo_has_minerais` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Kyber`.`emprestimo_has_Rochas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Kyber`.`emprestimo_has_Rochas` (
+  `emprestimo_idemprestimo` INT NOT NULL,
+  `emprestimo_usuario_idusuario` INT NOT NULL,
+  `Rochas_idRochas` INT NOT NULL,
+  `Rochas_site_idsite` INT NOT NULL,
+  PRIMARY KEY (`emprestimo_idemprestimo`, `emprestimo_usuario_idusuario`, `Rochas_idRochas`, `Rochas_site_idsite`),
+  INDEX `fk_emprestimo_has_Rochas_Rochas1_idx` (`Rochas_idRochas` ASC, `Rochas_site_idsite` ASC) VISIBLE,
+  INDEX `fk_emprestimo_has_Rochas_emprestimo1_idx` (`emprestimo_idemprestimo` ASC, `emprestimo_usuario_idusuario` ASC) VISIBLE,
+  CONSTRAINT `fk_emprestimo_has_Rochas_emprestimo1`
+    FOREIGN KEY (`emprestimo_idemprestimo` , `emprestimo_usuario_idusuario`)
+    REFERENCES `Kyber`.`emprestimo` (`idemprestimo` , `usuario_idusuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_emprestimo_has_Rochas_Rochas1`
+    FOREIGN KEY (`Rochas_idRochas` , `Rochas_site_idsite`)
+    REFERENCES `Kyber`.`Rochas` (`idRochas` , `site_idsite`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
