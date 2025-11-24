@@ -1,70 +1,59 @@
 package br.edu.ifpr.model;
-public class Site {
-    public String Name;
-    public int sId;
-    public String country;
-    public String city;
-    public boolean publicProprity;
-    public boolean visitable;
 
-    public Site(String name, int sId, String country, String city, boolean publicProprity, boolean visitable) {
-        Name = name;
-        this.sId = sId;
-        this.country = country;
-        this.city = city;
-        this.publicProprity = publicProprity;
-        this.visitable = visitable;
-    }
+public class Site {
+    private int idsite;
+    private String nome;
+    private String cidade;
+    private String pais;
+    private String propriedadeprivada; 
 
     public Site() {
     }
 
-    public String getName() {
-        return Name;
+    public Site(String nome, int idsite, String pais, String cidade, String propriedadeprivada) {
+        this.nome = nome;
+        this.idsite = idsite;
+        this.pais = pais;
+        this.cidade = cidade;
+        this.propriedadeprivada = propriedadeprivada;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public int getIdsite() {
+        return idsite;
     }
 
-    public int getsId() {
-        return sId;
+    public void setIdsite(int idsite) {
+        this.idsite = idsite;
     }
 
-    public void setsId(int sId) {
-        this.sId = sId;
+    public String getNome() {
+        return nome;
     }
 
-    public String getCountry() {
-        return country;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public String getCidade() {
+        return cidade;
     }
 
-    public String getCity() {
-        return city;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public String getPais() {
+        return pais;
     }
 
-    public boolean isPublicProprity() {
-        return publicProprity;
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 
-    public void setPublicProprity(boolean publicProprity) {
-        this.publicProprity = publicProprity;
+    public String getPropriedadeprivada() {
+        return propriedadeprivada;
     }
 
-    public boolean isVisitable() {
-        return visitable;
+    public void setPropriedadeprivada(String propriedadeprivada) {
+        this.propriedadeprivada = propriedadeprivada;
     }
-
-    public void setVisitable(boolean visitable) {
-        this.visitable = visitable;
-    }
-    
-}

@@ -13,23 +13,18 @@ public class RochaDAO {
         this.conn = conn;
     }
 
-    // INSERIR - Corrigido para o schema real
+    // INSERIR
     public void inserir(Rocha rocha) throws SQLException {
-        String sql = "INSERT INTO Rochas (tipo, dureza, corPrincipal, composicaoPrincipal, isitgem, " +
-                "site_idsite, site_nome, site_cidade, site_pais, site_propriedadeprivada) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO Rochas (nome, tipo, dureza, corPrincipal, isitgem, site_idsite) " +
+                     "VALUES (?, ?, ?, ?, ?, ?)";
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, rocha.getTipo());
-            stmt.setString(2, rocha.getDureza());
-            stmt.setString(3, rocha.getCorPrincipal());
-            stmt.setString(4, rocha.getComposicaoPrincipal());
+            stmt.setString(1, rocha.getNome());
+            stmt.setString(2, rocha.getTipo());
+            stmt.setString(3, rocha.getDureza());
+            stmt.setString(4, rocha.getCorPrincipal());
             stmt.setBoolean(5, rocha.isGem());
             stmt.setInt(6, rocha.getSite().getsId());
-            stmt.setString(7, rocha.getSite().getNome());
-            stmt.setString(8, rocha.getSite().getCidade());
-            stmt.setString(9, rocha.getSite().getPais());
-            stmt.setString(10, rocha.getSite().getPropriedadePrivada());
             stmt.executeUpdate();
 
             // Obter o ID gerado
@@ -41,10 +36,13 @@ public class RochaDAO {
         }
     }
 
-    // BUSCAR POR ID - Corrigido para o schema real (sem JOIN necessário)
+    // BUSCAR POR ID 
     public Rocha buscarPorId(int id) throws SQLException {
-        String sql = "SELECT * FROM Rochas WHERE idRochas = ?";
-
+        String sql = "SELECT r.*, s.nome as site_nome, s.cidade as site_cidade, s.pais as site_pais, s.propriedadeprivada as site_propriedadeprivada " +
+                     "FROM Rochas r " +
+                     "INNER JOIN site s ON r.site_idsite = s.idsite " +
+                     "WHERE r.idRochas = ?";
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
 
@@ -57,88 +55,77 @@ public class RochaDAO {
         }
     }
 
-    // BUSCAR GEMAS
-    public List<Rocha> buscarGemas() throws SQLException {
-        String sql = "SELECT * FROM Rochas WHERE isitgem = true ORDER BY tipo";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
-            return criarListaRochasFromResultSet(rs);
-        }
-    }
-
-    // LISTAR TODAS - Corrigido para o schema real (sem JOIN necessário)
+    
+    // LISTAR TODAS 
     public List<Rocha> listarTodas() throws SQLException {
-        String sql = "SELECT * FROM Rochas ORDER BY tipo";
-
+        String sql = "SELECT r.*, s.nome as site_nome, s.cidade as site_cidade, s.pais as site_pais, s.propriedadeprivada as site_propriedadeprivada " +
+                     "FROM Rochas r " +
+                     "INNER JOIN site s ON r.site_idsite = s.idsite " +
+                     "ORDER BY r.tipo";
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
+             ResultSet rs = stmt.executeQuery()) {
             return criarListaRochasFromResultSet(rs);
         }
     }
 
-    // ATUALIZAR - Corrigido para o schema real
     public void atualizar(Rocha rocha) throws SQLException {
-        String sql = "UPDATE Rochas SET tipo = ?, dureza = ?, corPrincipal = ?, composicaoPrincipal = ?, " +
-                "isitgem = ?, site_idsite = ?, site_nome = ?, site_cidade = ?, site_pais = ?, " +
-                "site_propriedadeprivada = ? WHERE idRochas = ?";
-
+        String sql = "UPDATE Rochas SET nome = ?, tipo = ?, dureza = ?, corPrincipal = ?, isitgem = ?, site_idsite = ? WHERE idRochas = ?";
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, rocha.getTipo());
-            stmt.setString(2, rocha.getDureza());
-            stmt.setString(3, rocha.getCorPrincipal());
-            stmt.setString(4, rocha.getComposicaoPrincipal());
+            stmt.setString(1, rocha.getNome());
+            stmt.setString(2, rocha.getTipo());
+            stmt.setString(3, rocha.getDureza());
+            stmt.setString(4, rocha.getCorPrincipal());
             stmt.setBoolean(5, rocha.isGem());
             stmt.setInt(6, rocha.getSite().getsId());
-            stmt.setString(7, rocha.getSite().getNome());
-            stmt.setString(8, rocha.getSite().getCidade());
-            stmt.setString(9, rocha.getSite().getPais());
-            stmt.setString(10, rocha.getSite().getPropriedadePrivada());
-            stmt.setInt(11, rocha.getIdRochas());
+            stmt.setInt(7, rocha.getIdRochas());
             stmt.executeUpdate();
         }
     }
 
-    // DELETAR - Corrigido para o schema real
+    // DELETAR
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM Rochas WHERE idRochas = ?";
-
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
     }
 
+    
     // MÉTODOS AUXILIARES PRIVADOS
     private Rocha criarRochaFromResultSet(ResultSet rs) throws SQLException {
-        // Criar objeto Site com dados da própria tabela Rochas
+        // Criar objeto Site
         Site site = new Site(
-                rs.getString("site_nome"),
-                rs.getInt("site_idsite"),
-                rs.getString("site_pais"),
-                rs.getString("site_cidade"),
-                rs.getString("site_propriedadeprivada").equalsIgnoreCase("true"),
-                false // visitavel - ajuste conforme necessário
+            rs.getString("site_nome"),
+            rs.getInt("site_idsite"),
+            rs.getString("site_pais"),
+            rs.getString("site_cidade"),
+            rs.getString("site_propriedadeprivada").equalsIgnoreCase("true"),
+            false // visitavel - ajuste conforme necessário
         );
 
         // Criar e retornar Rocha
         return new Rocha(
-                rs.getInt("idRochas"),
-                rs.getString("tipo"),
-                rs.getString("dureza"),
-                rs.getString("corPrincipal"),
-                rs.getString("composicaoPrincipal"),
-                rs.getBoolean("isitgem"),
-                site);
+            rs.getInt("idRochas"),
+            rs.getString("nome"),
+            rs.getString("tipo"),
+            rs.getString("dureza"),
+            rs.getString("corPrincipal"),
+            rs.getBoolean("isitgem"),
+            site
+        );
     }
 
     private List<Rocha> criarListaRochasFromResultSet(ResultSet rs) throws SQLException {
         List<Rocha> rochas = new ArrayList<>();
-
+        
         while (rs.next()) {
             rochas.add(criarRochaFromResultSet(rs));
         }
-
+        
         return rochas;
     }
 }
