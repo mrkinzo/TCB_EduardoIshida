@@ -43,14 +43,7 @@ public class RochaController {
         }
     }
 
-    public List<Rocha> buscarRochasPorTipo(String tipo) {
-        try {
-            return rochaDAO.buscarPorTipo(tipo);
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar rochas por tipo: " + e.getMessage());
-            return null;
-        }
-    }
+    
 
     
     public void atualizarRocha(Rocha rocha) {
@@ -73,12 +66,4 @@ public class RochaController {
         }
     }
 
-    public int contarTotalRochas() {
-        try {
-            return rochaDAO.contarTotal();
-        } catch (SQLException e) {
-            System.err.println("Erro ao contar rochas: " + e.getMessage());
-            return 0;
-        }
-    }
 }
