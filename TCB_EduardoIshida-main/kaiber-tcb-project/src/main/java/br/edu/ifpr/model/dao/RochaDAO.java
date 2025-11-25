@@ -24,7 +24,7 @@ public class RochaDAO {
             stmt.setString(3, rocha.getDureza());
             stmt.setString(4, rocha.getCorPrincipal());
             stmt.setBoolean(5, rocha.isGem());
-            stmt.setInt(6, rocha.getSite().getsId());
+            stmt.setInt(6, rocha.getSite().getIdsite());
             stmt.executeUpdate();
 
             // Obter o ID gerado
@@ -78,7 +78,7 @@ public class RochaDAO {
             stmt.setString(3, rocha.getDureza());
             stmt.setString(4, rocha.getCorPrincipal());
             stmt.setBoolean(5, rocha.isGem());
-            stmt.setInt(6, rocha.getSite().getsId());
+            stmt.setInt(6, rocha.getSite().getIdsite());
             stmt.setInt(7, rocha.getIdRochas());
             stmt.executeUpdate();
         }

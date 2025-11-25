@@ -7,7 +7,7 @@ public class Site {
     private String pais;
     private String propriedadeprivada; 
 
-    public Site() {
+    public Site(String string, int i, String string2, String string3, boolean b, boolean c) {
     }
 
     public Site(String nome, int idsite, String pais, String cidade, String propriedadeprivada) {
@@ -57,3 +57,4 @@ public class Site {
     public void setPropriedadeprivada(String propriedadeprivada) {
         this.propriedadeprivada = propriedadeprivada;
     }
+

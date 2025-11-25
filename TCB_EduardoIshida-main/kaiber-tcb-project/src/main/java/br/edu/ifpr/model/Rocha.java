@@ -19,7 +19,7 @@ public class Rocha {
     private Site site; // Objeto Site completo
 
     // Construtor para inserção (sem ID) com objeto Site
-    public Rocha(String nome, String tipo, String dureza, String corPrincipal, boolean gem, Site site) {
+    public Rocha(int i, String nome, String tipo, String dureza, String corPrincipal, boolean gem, Site site) {
         this.nome = nome;
         this.tipo = tipo;
         this.dureza = dureza;

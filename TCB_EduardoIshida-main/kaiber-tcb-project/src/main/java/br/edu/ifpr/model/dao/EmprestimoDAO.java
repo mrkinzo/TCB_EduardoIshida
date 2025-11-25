@@ -1,3 +1,4 @@
+package br.edu.ifpr.model.dao;
 import java.sql.*;
 import java.util.List;
 import br.edu.ifpr.model.Mineral;
@@ -51,7 +52,7 @@ public class EmprestimoDAO {
                     stmt.setInt(1, emprestimoId);
                     stmt.setInt(2, userId);
                     stmt.setInt(3, m.getIdminerais());
-                    stmt.setInt(4, m.getSiteIdSite());
+                    stmt.setInt(4, m.getSite().getIdsite());
                     stmt.addBatch();
                 }
                 stmt.executeBatch();
@@ -63,7 +64,7 @@ public class EmprestimoDAO {
                     stmt.setInt(1, emprestimoId);
                     stmt.setInt(2, userId);
                     stmt.setInt(3, r.getIdRochas());
-                    stmt.setInt(4, r.getSiteIdSite());
+                    stmt.setInt(4, r.getSiteId());
                     stmt.addBatch();
                 }
                 stmt.executeBatch();
