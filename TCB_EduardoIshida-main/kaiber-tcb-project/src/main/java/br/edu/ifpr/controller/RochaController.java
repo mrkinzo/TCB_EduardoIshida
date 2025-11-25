@@ -52,15 +52,7 @@ public class RochaController {
         }
     }
 
-    public List<Rocha> buscarGemas() {
-        try {
-            return rochaDAO.buscarGemas();
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar gemas: " + e.getMessage());
-            return null;
-        }
-    }
-
+    
     public void atualizarRocha(Rocha rocha) {
         try {
             rochaDAO.atualizar(rocha);
