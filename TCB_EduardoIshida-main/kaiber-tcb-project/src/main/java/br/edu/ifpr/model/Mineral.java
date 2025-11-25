@@ -75,4 +75,9 @@ public class Mineral {
         throw new UnsupportedOperationException("Unimplemented method 'setIdms'");
     }
 
+    public void setIdminerais(int int1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setIdminerais'");
+    }
+
 }

@@ -128,7 +128,7 @@ public class MineralDAO {
 
     // ✅ CORRIGIDO: Método auxiliar privado para criar Mineral do ResultSet
     private Mineral criarMineralFromResultSet(ResultSet rs) throws SQLException {
-        Mineral mineral = new Mineral();
+        Mineral mineral = new Mineral(0, null, 0, null, null, null, null);
         mineral.setIdminerais(rs.getInt("idminerais"));
         mineral.setNome(rs.getString("nome"));
         mineral.setTipo(rs.getString("tipo"));
