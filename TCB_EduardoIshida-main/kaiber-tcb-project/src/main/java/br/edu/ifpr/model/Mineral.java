@@ -9,7 +9,6 @@ public class Mineral {
         this.cor = cor;
         this.brilho = brilho;
         this.toxicidade = toxicidade;
-        this.siteIdSite = siteIdSite2; // Ensure this is correct
     }
 
     String tipo;

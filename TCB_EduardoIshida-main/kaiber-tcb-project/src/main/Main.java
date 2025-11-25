@@ -31,19 +31,19 @@ public class Main {
         int x = LER.nextInt();
         switch (x) {
             case 1:
-
+                cadastrarRocha();
                 break;
             case 2:
-
+                cadastrarMineral();
                 break;
             case 3:
-
+                rochaCtrl.listarTodasRochas();
                 break;
             case 4:
-
+                mineralCtrl.listarTodosMinerais();
                 break;
             case 5:
-
+                rochaCtrl.atualizarRocha(LER.next());
                 break;
             default:
                 break;
@@ -51,26 +51,52 @@ public class Main {
     }
 
     public static void cadastroDeUsuario(User user) {
+        System.out.println("===------Por Favor insira suas credenciais------===");
+        System.out.println();
+        System.out.println("Insira seu nome");
         user.setName(LER.next());
+        System.out.println("Insira sua instituição");
         user.setInstitution(LER.next());
+        System.out.println("Insira seu cargo");
         user.setRole(LER.next());
         us.cadastrarUser(user);
     }
 
     public static void cadastrarMineral() {
-        
+        System.out.println("Cadastrando novo mineral:");
+        System.out.println();
+        Mineral mine = new Mineral();
+        System.out.println("insira o nome");
+        mine.setNome(LER.next());
+        System.out.println("insira o tipo");
+        mine.setTipo(LER.next());
+        System.out.println("Insira a dureza (De acordo com Mohs)");
+        mine.setDureza(LER.next());
+        System.out.println("insira a cor Principal");
+        mine.setCor(LER.next());
+        System.out.println("Insira o brilho");
+        mine.setBrilho(LER.next());
+        System.out.println("nivel de toxicidade");
+        mine.setToxicidade(LER.next());
+
     }
 
     public static void cadastrarRocha() {
 
         System.out.println("Cadastrando nova rocha:");
-        System.out.println("insire os dados da rocha: tipo, dureza, cor principal, é gema(true/false) e dados do site (nome, cidade, país, visitável(true/false))");
+        System.out.println();
         Rocha rocha = new Rocha();
-        rocha.setNa
+        System.out.println("insira o nome");
+        rocha.setNome(LER.next());
+        System.out.println("insira o tipo");
         rocha.setTipo(LER.next());
+        System.out.println("Insira a dureza (De acordo com Mohs)");
         rocha.setDureza(LER.next());
+        System.out.println("insira a cor Principal");
         rocha.setCorPrincipal(LER.next());
+        System.out.println("Essa rocha se caracteriza como uma gema(verdeiro ou falso)");
         rocha.setGem(LER.nextBoolean());
+        System.out.println("insira as informações do sitio");
         Site site = new Site();
         cadastrarSite(site);
         rocha.setSite(site);
@@ -78,9 +104,13 @@ public class Main {
     }
 
     public static void cadastrarSite(Site site) {
+        System.out.println("insira o nome do Sitio");
         site.setName(LER.next());
+        System.out.println("insira a cidade onde ele se localiza");
         site.setCity(LER.next());
+        System.out.println("insira o País aonde ele se encontra");
         site.setCountry(LER.next());
+        System.out.println("Esse site é abert à visitação?");
         site.setVisitable(LER.nextBoolean());
         siteCtrl.cadastrarSite(site);
     }

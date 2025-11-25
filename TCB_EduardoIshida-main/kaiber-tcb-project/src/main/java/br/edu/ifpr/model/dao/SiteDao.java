@@ -15,13 +15,17 @@ public class SiteDAO {
     public void inserir(Site site) throws SQLException {
         String sql = "INSERT INTO site (idsite, nome, cidade, pais, propriedadeprivada) VALUES (?, ?, ?, ?, ?)";
         
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, site.getIdsite());
-            stmt.setString(2, site.getNome());
-            stmt.setString(3, site.getCidade());
-            stmt.setString(4, site.getPais());
-            stmt.setString(5, site.getPropriedadeprivada());
-            stmt.executeUpdate();
+        try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        stmt.setString(1, site.getNome());
+        stmt.setString(2, site.getCidade());
+        stmt.setString(3, site.getPais());
+        stmt.setString(4, site.getPropriedadeprivada());
+        stmt.executeUpdate();
+
+        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                site.setIdsite(generatedKeys.getInt(1)); 
+            }
         }
     }
     }

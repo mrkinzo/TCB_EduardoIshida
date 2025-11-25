@@ -20,15 +20,19 @@ USE `Kyber` ;
 -- -----------------------------------------------------
 -- Table `Kyber`.`site`
 -- -----------------------------------------------------
+-- ALTERAR A TABELA PARA AUTO_INCREMENT
+ALTER TABLE `Kyber`.`site` 
+MODIFY COLUMN `idsite` INT NOT NULL AUTO_INCREMENT;
+
+-- Ou recriar a tabela corretamente:
 CREATE TABLE IF NOT EXISTS `Kyber`.`site` (
-  `idsite` INT NOT NULL,
-  `nome` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `cidade` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `pais` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `propriedadeprivada` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  PRIMARY KEY (`idsite`),
-  UNIQUE INDEX `idsite_UNIQUE` (`idsite` ASC) VISIBLE)
-ENGINE = InnoDB
+  `idsite` INT NOT NULL AUTO_INCREMENT,  
+  `nome` VARCHAR(45) NOT NULL,
+  `cidade` VARCHAR(45) NOT NULL,
+  `pais` VARCHAR(45) NOT NULL,
+  `propriedadeprivada` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idsite`)
+) ENGINE = InnoDB;
 DEFAULT CHARACTER SET = utf8mb3;
 
 
