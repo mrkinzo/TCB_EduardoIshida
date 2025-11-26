@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ifpr.model.Mineral;
-import br.edu.ifpr.model.dao.MineralDAO;
+import br.edu.ifpr.model.MineralDAO;
 
 public class MineralController {
 private MineralDAO;

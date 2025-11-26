@@ -1,3 +1,4 @@
+package br.edu.ifpr.model;
 import java.sql.*;
 import java.util.List;
 import br.edu.ifpr.model.Mineral;
@@ -50,7 +51,7 @@ public class EmprestimoDAO {
                 for (Mineral m : minerais) {
                     stmt.setInt(1, emprestimoId);
                     stmt.setInt(2, userId);
-                    stmt.setInt(3, m.getIdminerais());
+                    stmt.setInt(3, m.getIdMinera());
                     stmt.setInt(4, m.getSiteIdSite());
                     stmt.addBatch();
                 }
@@ -63,7 +64,7 @@ public class EmprestimoDAO {
                     stmt.setInt(1, emprestimoId);
                     stmt.setInt(2, userId);
                     stmt.setInt(3, r.getIdRochas());
-                    stmt.setInt(4, r.getSiteIdSite());
+                    stmt.setInt(4, r.getSite().getsId());
                     stmt.addBatch();
                 }
                 stmt.executeBatch();

@@ -31,19 +31,25 @@ public class Main {
         int x = LER.nextInt();
         switch (x) {
             case 1:
-
+                cadastrarRocha();
                 break;
             case 2:
-
+                cadastrarMineral();
                 break;
             case 3:
-
+                imprimirRochas();
                 break;
             case 4:
-
+                imprimirMinerais();
                 break;
             case 5:
-
+                realizarEmprestimo();
+                break;
+            case 6:
+                editarRocha();
+                break;
+            case 7:
+                editarMineral();
                 break;
             default:
                 break;
@@ -58,15 +64,19 @@ public class Main {
     }
 
     public static void cadastrarMineral() {
-        
+        System.out.println("Cadastrando novo mineral:");
+        System.out.println("insire os dados do mineral: tipo, dureza, cor, brilho, toxicidade (true/false) e dados do site (nome, cidade, país, visitável(true/false))");
+        Mineral mineral = new Mineral();
+        mineral.setno
     }
 
     public static void cadastrarRocha() {
 
         System.out.println("Cadastrando nova rocha:");
-        System.out.println("insire os dados da rocha: tipo, dureza, cor principal, é gema(true/false) e dados do site (nome, cidade, país, visitável(true/false))");
+        System.out.println(
+                "insire os dados da rocha: tipo, dureza, cor principal, é gema(true/false) e dados do site (nome, cidade, país, visitável(true/false))");
         Rocha rocha = new Rocha();
-        rocha.setNa
+        rocha.setNome(LER.next());
         rocha.setTipo(LER.next());
         rocha.setDureza(LER.next());
         rocha.setCorPrincipal(LER.next());

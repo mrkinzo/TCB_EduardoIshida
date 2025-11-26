@@ -181,7 +181,7 @@ public class RochaDAO {
 
         // Criar e retornar Rocha
         return new Rocha(
-            rs.getInt("idrochas"),
+            String.valueOf(rs.getInt("idrochas")),
             rs.getString("tipo"),
             rs.getString("dureza"),
             rs.getString("corPrincipal"),
