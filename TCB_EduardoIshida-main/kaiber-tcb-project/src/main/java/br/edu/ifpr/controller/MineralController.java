@@ -1,16 +1,18 @@
 package br.edu.ifpr.controller;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import br.edu.ifpr.model.Mineral;
 import br.edu.ifpr.model.MineralDAO;
 
 public class MineralController {
-private MineralDAO;
+
+private MineralDAO mineralDAO;
+    private Connection conn;
     public MineralController() {
-        this.MineralDAO = new MineralDAO();
+        this.mineralDAO = new MineralDAO(conn);
     }
 
     public static void CadastrarMineral(Mineral mineral) {

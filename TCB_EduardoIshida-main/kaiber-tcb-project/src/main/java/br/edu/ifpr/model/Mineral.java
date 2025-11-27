@@ -2,21 +2,36 @@ package br.edu.ifpr.model;
 
 public class Mineral {
 
-    public Mineral(int siteIdSite, String tipo, float dureza, String cor, String brilho, String toxicidade, int siteIdSite2) {
-        this.siteIdSite = siteIdSite;
+    public Mineral(int siteIdSite, String tipo, float dureza, String cor, String brilho, String toxicidade, Site site) {
         this.tipo = tipo;
         this.dureza = dureza;
         this.cor = cor;
         this.brilho = brilho;
         this.toxicidade = toxicidade;
     }
+  
+    public String getNome() {
+        return nome;
+    }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+      String nome;
     String tipo;
     float dureza;
     String cor;
     String brilho;
     String toxicidade;
-    int siteIdSite;
+    Site site;
+
+    public Site getSite() {
+        return site;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
+    }
 
     public String getTipo() {
         return tipo;
@@ -58,12 +73,19 @@ public class Mineral {
         this.toxicidade = toxicidade;
     }
 
-    public int getSiteIdSite() {
-        return siteIdSite;
+    public int getIdminerais() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIdminerais'");
     }
 
-    public void setSiteIdSite(int siteIdSite) {
-        this.siteIdSite = siteIdSite;
+    public void setIdms(int int1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setIdms'");
+    }
+
+    public void setIdminerais(int int1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setIdminerais'");
     }
 
 }
