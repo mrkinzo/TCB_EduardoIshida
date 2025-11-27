@@ -1,36 +1,58 @@
 package br.edu.ifpr.model;
 
 public class Mineral {
+    private int idminerais;
+    private String nome;
+    private String tipo;
+    private float dureza;
+    private String cor;
+    private String brilho;
+    private String toxicidade;
+    private int siteIdSite;
 
-    public Mineral(int siteIdSite, String tipo, float dureza, String cor, String brilho, String toxicidade, Site site) {
+    // ✅ Construtor vazio
+    public Mineral() {}
+
+    // ✅ Construtor para INSERT (sem ID)
+    public Mineral(String nome, String tipo, float dureza, String cor, 
+                   String brilho, String toxicidade, int siteIdSite) {
+        this.nome = nome;
         this.tipo = tipo;
         this.dureza = dureza;
         this.cor = cor;
         this.brilho = brilho;
         this.toxicidade = toxicidade;
+        this.siteIdSite = siteIdSite;
     }
-  
+
+    // ✅ Construtor para SELECT (com ID)
+    public Mineral(int idminerais, String nome, String tipo, float dureza, 
+                   String cor, String brilho, String toxicidade, int siteIdSite) {
+        this.idminerais = idminerais;
+        this.nome = nome;
+        this.tipo = tipo;
+        this.dureza = dureza;
+        this.cor = cor;
+        this.brilho = brilho;
+        this.toxicidade = toxicidade;
+        this.siteIdSite = siteIdSite;
+    }
+
+    // ✅ Getters e Setters
+    public int getIdminerais() {
+        return idminerais;
+    }
+
+    public void setIdminerais(int idminerais) {
+        this.idminerais = idminerais;
+    }
+
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-      String nome;
-    String tipo;
-    float dureza;
-    String cor;
-    String brilho;
-    String toxicidade;
-    Site site;
-
-    public Site getSite() {
-        return site;
-    }
-
-    public void setSite(Site site) {
-        this.site = site;
     }
 
     public String getTipo() {
@@ -73,19 +95,34 @@ public class Mineral {
         this.toxicidade = toxicidade;
     }
 
-    public int getIdminerais() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getIdminerais'");
+    public int getSiteIdSite() {
+        return siteIdSite;
     }
 
-    public void setIdms(int int1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setIdms'");
+    public void setSiteIdSite(int siteIdSite) {
+        this.siteIdSite = siteIdSite;
     }
 
-    public void setIdminerais(int int1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setIdminerais'");
+
+    @Override
+    public String toString() {
+        return "Mineral{" +
+                "id=" + idminerais +
+                ", nome='" + nome + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", dureza=" + dureza +
+                ", cor='" + cor + '\'' +
+                ", brilho='" + brilho + '\'' +
+                ", toxicidade='" + toxicidade + '\'' +
+                ", siteId=" + siteIdSite +
+                '}';
     }
 
+
+    public String exibirDetalhes() {
+        return String.format(
+            "ID: %d | %s | %s | Dureza: %.1f | Cor: %s | Brilho: %s | Toxicidade: %s",
+            idminerais, nome, tipo, dureza, cor, brilho, toxicidade
+        );
+    }
 }

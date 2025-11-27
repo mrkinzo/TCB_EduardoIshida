@@ -85,13 +85,20 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `Kyber`.`usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Kyber`.`usuario` (
-  `idusuario` INT NOT NULL,
+ALTER TABLE `Kyber`.`user` 
+MODIFY COLUMN `iduser` INT NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `Kyber`.`user` 
+MODIFY COLUMN `iduser` INT NOT NULL AUTO_INCREMENT;
+
+
+CREATE TABLE IF NOT EXISTS `Kyber`.`user` (
+  `iduser` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   `instituicao` VARCHAR(45) NOT NULL,
   `cargo` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idusuario`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`iduser`)
+) ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -159,7 +166,12 @@ CREATE TABLE IF NOT EXISTS `Kyber`.`emprestimo_has_Rochas` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+ALTER TABLE `Kyber`.`emprestimo` 
+MODIFY COLUMN `idemprestimo` INT NOT NULL AUTO_INCREMENT;
 
+-- Corrigir tipo de dados na tabela minerais (site_idsite deve ser INT)
+ALTER TABLE `Kyber`.`minerais` 
+MODIFY COLUMN `site_idsite` INT NOT NULL;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

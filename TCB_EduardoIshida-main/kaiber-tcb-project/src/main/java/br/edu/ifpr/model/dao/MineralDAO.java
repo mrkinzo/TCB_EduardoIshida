@@ -1,9 +1,9 @@
 package br.edu.ifpr.model.dao;
 
+import br.edu.ifpr.model.Mineral;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import br.edu.ifpr.model.Mineral;
 
 public class MineralDAO {
     private Connection conn;
@@ -12,7 +12,7 @@ public class MineralDAO {
         this.conn = conn;
     }
 
-    // ✅ CORRIGIDO: Método de inserção
+    // ✅ INSERIR
     public void inserir(Mineral mineral) throws SQLException {
         String sql = "INSERT INTO minerais (nome, tipo, dureza, cor, brilho, toxicidade, site_idsite) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -24,7 +24,7 @@ public class MineralDAO {
             stmt.setString(4, mineral.getCor());
             stmt.setString(5, mineral.getBrilho());
             stmt.setString(6, mineral.getToxicidade());
-            stmt.setString(7, String.valueOf(mineral.getSiteIdSite())); // site_idsite é VARCHAR
+            stmt.setInt(7, mineral.getSiteIdSite());
             stmt.executeUpdate();
 
             // Obter o ID gerado
@@ -36,7 +36,7 @@ public class MineralDAO {
         }
     }
 
-    // ✅ CORRIGIDO: Buscar mineral por ID
+    // ✅ BUSCAR POR ID
     public Mineral buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM minerais WHERE idminerais = ?";
         
@@ -52,9 +52,9 @@ public class MineralDAO {
         }
     }
 
-    // ✅ CORRIGIDO: Listar todos os minerais
+    // ✅ LISTAR TODOS
     public List<Mineral> listarTodos() throws SQLException {
-        String sql = "SELECT * FROM minerais";
+        String sql = "SELECT * FROM minerais ORDER BY nome";
         
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -67,7 +67,7 @@ public class MineralDAO {
         }
     }
 
-    // ✅ CORRIGIDO: Método para atualizar mineral
+    // ✅ ATUALIZAR
     public void atualizar(Mineral mineral) throws SQLException {
         String sql = "UPDATE minerais SET nome = ?, tipo = ?, dureza = ?, cor = ?, " +
                      "brilho = ?, toxicidade = ?, site_idsite = ? WHERE idminerais = ?";
@@ -79,13 +79,13 @@ public class MineralDAO {
             stmt.setString(4, mineral.getCor());
             stmt.setString(5, mineral.getBrilho());
             stmt.setString(6, mineral.getToxicidade());
-            stmt.setString(7, String.valueOf(mineral.getSiteIdSite()));
+            stmt.setInt(7, mineral.getSiteIdSite());
             stmt.setInt(8, mineral.getIdminerais());
             stmt.executeUpdate();
         }
     }
 
-    // ✅ CORRIGIDO: Método para deletar mineral
+    // ✅ DELETAR
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM minerais WHERE idminerais = ?";
         
@@ -95,9 +95,9 @@ public class MineralDAO {
         }
     }
 
-    // ✅ CORRIGIDO: Buscar minerais por tipo
+    // ✅ BUSCAR POR TIPO
     public List<Mineral> buscarPorTipo(String tipo) throws SQLException {
-        String sql = "SELECT * FROM minerais WHERE tipo = ?";
+        String sql = "SELECT * FROM minerais WHERE tipo = ? ORDER BY nome";
         
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, tipo);
@@ -112,31 +112,55 @@ public class MineralDAO {
         }
     }
 
-    // ✅ CORRIGIDO: Contar total de minerais
-    public int contarTotal() throws SQLException {
-        String sql = "SELECT COUNT(*) as total FROM minerais";
+    // ✅ BUSCAR POR SITE
+    public List<Mineral> buscarPorSite(int siteId) throws SQLException {
+        String sql = "SELECT * FROM minerais WHERE site_idsite = ? ORDER BY nome";
         
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            
-            if (rs.next()) {
-                return rs.getInt("total");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, siteId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Mineral> lista = new ArrayList<>();
+                while (rs.next()) {
+                    lista.add(criarMineralFromResultSet(rs));
+                }
+                return lista;
             }
-            return 0;
         }
     }
 
-    // ✅ CORRIGIDO: Método auxiliar privado para criar Mineral do ResultSet
+    // ✅ BUSCAR POR DUREZA (faixa)
+    public List<Mineral> buscarPorFaixaDureza(float durezaMin, float durezaMax) throws SQLException {
+        String sql = "SELECT * FROM minerais WHERE dureza BETWEEN ? AND ? ORDER BY dureza";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setFloat(1, durezaMin);
+            stmt.setFloat(2, durezaMax);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Mineral> lista = new ArrayList<>();
+                while (rs.next()) {
+                    lista.add(criarMineralFromResultSet(rs));
+                }
+                return lista;
+            }
+        }
+    }
+
+
+  
+    // ✅ MÉTODO AUXILIAR PRIVADO
     private Mineral criarMineralFromResultSet(ResultSet rs) throws SQLException {
-        Mineral mineral = new Mineral(0, null, 0, null, null, null, null);
-        mineral.setIdminerais(rs.getInt("idminerais"));
-        mineral.setNome(rs.getString("nome"));
-        mineral.setTipo(rs.getString("tipo"));
-        mineral.setDureza(rs.getFloat("dureza"));
-        mineral.setCor(rs.getString("cor"));
-        mineral.setBrilho(rs.getString("brilho"));
-        mineral.setToxicidade(rs.getString("toxicidade"));
-        mineral.setSiteIdSite(rs.getInt("site_idsite"));
+        Mineral mineral = new Mineral(
+            rs.getInt("idminerais"),
+            rs.getString("nome"),
+            rs.getString("tipo"),
+            rs.getFloat("dureza"),
+            rs.getString("cor"),
+            rs.getString("brilho"),
+            rs.getString("toxicidade"),
+            rs.getInt("site_idsite")
+        );
         
         return mineral;
     }

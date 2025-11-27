@@ -54,7 +54,12 @@ public class Site {
         return propriedadeprivada;
     }
 
-    public void setPropriedadeprivada(String propriedadeprivada) {
-        this.propriedadeprivada = propriedadeprivada;
+        public void setPropriedadeprivada(String propriedadeprivada) {
+            this.propriedadeprivada = propriedadeprivada;
+        }
+
+    int getId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     }
 
