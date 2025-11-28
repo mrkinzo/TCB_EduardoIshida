@@ -5,18 +5,25 @@ public class Site {
     private String nome;
     private String cidade;
     private String pais;
-    private String propriedadeprivada; 
+    private String propriedadeprivada;
 
-    public Site(String string, int i, String string2, String string3, boolean b, boolean c) {
-    }
-
-    public Site(String nome, int idsite, String pais, String cidade, String propriedadeprivada) {
+    // ✅ Construtor corrigido
+    public Site(String nome, String cidade, String pais, String propriedadeprivada) {
         this.nome = nome;
-        this.idsite = idsite;
-        this.pais = pais;
         this.cidade = cidade;
+        this.pais = pais;
         this.propriedadeprivada = propriedadeprivada;
     }
+
+    //  Construtor para SELECT
+    public Site(int idsite, String nome, String cidade, String pais, String propriedadeprivada) {
+        this.idsite = idsite;
+        this.nome = nome;
+        this.cidade = cidade;
+        this.pais = pais;
+        this.propriedadeprivada = propriedadeprivada;
+    }
+
 
     public int getIdsite() {
         return idsite;
@@ -54,12 +61,8 @@ public class Site {
         return propriedadeprivada;
     }
 
-        public void setPropriedadeprivada(String propriedadeprivada) {
-            this.propriedadeprivada = propriedadeprivada;
-        }
-
-    int getId() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public void setPropriedadeprivada(String propriedadeprivada) {
+        this.propriedadeprivada = propriedadeprivada;
     }
 
+}

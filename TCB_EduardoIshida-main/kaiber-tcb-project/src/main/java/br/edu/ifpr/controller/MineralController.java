@@ -13,10 +13,18 @@ public class MineralController {
     private Connection conn;
 
     public MineralController() {
-        this.conn = ConnectionFactory.getConnection(); // ✅ Obter conexão
+        this.conn = ConnectionFactory.getConnection();
         this.mineralDAO = new MineralDAO(conn);
     }
 
+    public Mineral buscarMineralPorId(int id) {
+        try {
+            return mineralDAO.buscarPorId(id);
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar mineral: " + e.getMessage());
+            return null;
+        }
+    }
     public void cadastrarMineral(Mineral mineral) {
         try {
             mineralDAO.inserir(mineral);
@@ -24,13 +32,21 @@ public class MineralController {
             System.err.println("Erro ao cadastrar mineral: " + e.getMessage());
         }
     }
-public List<Mineral> listarTodosMinerais() {
-    try {
-        return mineralDAO.listarTodos();
-    } catch (SQLException e) {
-        System.err.println("Erro ao listar minerais: " + e.getMessage());
-        return new ArrayList<>();
-    }
-}
 
+    public List<Mineral> listarTodosMinerais() {
+        try {
+            return mineralDAO.listarTodos();
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar minerais: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public void atualizarMineral(Mineral mineral) {
+        try {
+            mineralDAO.atualizar(mineral);
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar mineral: " + e.getMessage());
+        }
+    }
 }

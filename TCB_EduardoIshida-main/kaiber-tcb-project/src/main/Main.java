@@ -307,7 +307,7 @@ public class Main {
         for (String idStr : ids) {
             try {
                 int idProcurado = Integer.parseInt(idStr.trim());
-                Mineral mineralEncontrado = mineralCtrl.buscarMineralPorId(idProcurado);
+                Mineral mineralEncontrado = mineralCtrl.b(idProcurado);
                 
                 if (mineralEncontrado != null) {
                     selecionados.add(mineralEncontrado);
