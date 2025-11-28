@@ -8,20 +8,24 @@ public class Site {
     private String propriedadeprivada;
 
     // ✅ Construtor corrigido
-    public Site(String nome, String cidade, String pais, String propriedadeprivada) {
+    public Site(String nome, int par, String cidade, String pais, int par1) {
         this.nome = nome;
         this.cidade = cidade;
         this.pais = pais;
         this.propriedadeprivada = propriedadeprivada;
     }
 
-    //  Construtor para SELECT
+    // Construtor para SELECT
     public Site(int idsite, String nome, String cidade, String pais, String propriedadeprivada) {
         this.idsite = idsite;
         this.nome = nome;
         this.cidade = cidade;
         this.pais = pais;
         this.propriedadeprivada = propriedadeprivada;
+    }
+
+    public Site(String string, int int1, String string2, String string3, boolean equalsIgnoreCase, boolean b) {
+        // TODO Auto-generated constructor stub
     }
 
 

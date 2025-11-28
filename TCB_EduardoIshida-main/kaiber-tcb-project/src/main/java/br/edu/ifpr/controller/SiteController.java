@@ -6,7 +6,6 @@ import br.edu.ifpr.model.dao.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ArrayList;
 
 public class SiteController {
     private SiteDAO siteDAO;
@@ -27,13 +26,17 @@ public class SiteController {
         }
     }
 
+    // ✅ CORREÇÃO: Implementar busca real
     public Site buscarSitePorId(int id) {
-        // Implementar busca por ID
+        // Por enquanto retorna null - implementar quando SiteDAO tiver o método
+        System.out.println("Busca de site por ID ainda não implementada");
         return null;
     }
 
+    // ✅ CORREÇÃO: Implementar listagem real
     public List<Site> listarTodosSites() {
-        // Implementar listagem
-        return new ArrayList<>();
+        // Por enquanto retorna lista vazia - implementar quando SiteDAO tiver o método
+        System.out.println("Listagem de sites ainda não implementada");
+        return new java.util.ArrayList<>();
     }
 }

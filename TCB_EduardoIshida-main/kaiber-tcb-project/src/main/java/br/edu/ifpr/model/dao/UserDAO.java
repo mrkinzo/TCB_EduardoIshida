@@ -11,8 +11,7 @@ public class UserDAO {
     }
 
     public void cadastrarUser(User user) throws SQLException {
-        String sql = "INSERT INTO usuario (nome, instituicao, cargo) VALUES (?, ?, ?)";
-        
+        String sql = "INSERT INTO user (nome, instituicao, cargo) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getInstitution());
@@ -29,12 +28,11 @@ public class UserDAO {
     }
 
     public User buscarPorCredenciais(String nome, String instituicao) throws SQLException {
-        String sql = "SELECT * FROM usuario WHERE nome = ? AND instituicao = ?";
-        
+        String sql = "SELECT * FROM user WHERE iduser = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nome);
             stmt.setString(2, instituicao);
-            
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
@@ -50,11 +48,10 @@ public class UserDAO {
     }
 
     public User buscarPorId(int id) throws SQLException {
-        String sql = "SELECT * FROM usuario WHERE idusuario = ?";
-        
+        String sql = "SELECT * FROM user WHERE iduser = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
