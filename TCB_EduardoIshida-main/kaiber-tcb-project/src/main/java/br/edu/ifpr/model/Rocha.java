@@ -9,10 +9,11 @@ public class Rocha {
     private boolean gem;
     private Site site;
 
-    // ✅ Construtor vazio
-    public Rocha() {}
+    // Construtor vazio
+    public Rocha() {
+    }
 
-    // ✅ Construtor para INSERT (sem ID)
+    // Construtor para INSERT (sem ID)
     public Rocha(String nome, String tipo, String dureza, String corPrincipal, boolean gem, Site site) {
         this.nome = nome;
         this.tipo = tipo;
@@ -22,7 +23,7 @@ public class Rocha {
         this.site = site;
     }
 
-    // ✅ Construtor para SELECT (com ID do banco)
+    // Construtor para SELECT (com ID do banco)
     public Rocha(int idRochas, String nome, String tipo, String dureza, String corPrincipal, boolean gem, Site site) {
         this.idRochas = idRochas;
         this.nome = nome;
@@ -33,7 +34,7 @@ public class Rocha {
         this.site = site;
     }
 
-    // ✅ Getters e Setters
+    // Getters e Setters
     public int getIdRochas() {
         return idRochas;
     }
@@ -109,13 +110,12 @@ public class Rocha {
                 '}';
     }
 
-    //  Método para exibição formatada
+    // Método para exibição formatada
     public String exibirDetalhes() {
         return String.format(
-            "ID: %d | %s | %s | Dureza: %s | Cor: %s | Gema: %s | Site: %s",
-            idRochas, nome, tipo, dureza, corPrincipal, 
-            gem ? "Sim" : "Não", 
-            site != null ? site.getNome() : "Nenhum"
-        );
+                "ID: %d | %s | %s | Dureza: %s | Cor: %s | Gema: %s | Site: %s",
+                idRochas, nome, tipo, dureza, corPrincipal,
+                gem ? "Sim" : "Não",
+                site != null ? site.getNome() : "Nenhum");
     }
 }

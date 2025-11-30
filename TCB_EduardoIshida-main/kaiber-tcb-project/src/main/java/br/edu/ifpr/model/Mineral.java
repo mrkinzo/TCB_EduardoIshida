@@ -8,26 +8,35 @@ public class Mineral {
     private String cor;
     private String brilho;
     private String toxicidade;
-    private int siteIdSite;
+    private Site site;
+
+    public Site getSite() {
+        return site;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
+    }
 
     // ✅ Construtor vazio
-    public Mineral() {}
+    public Mineral() {
+    }
 
     // ✅ Construtor para INSERT (sem ID)
-    public Mineral(String nome, String tipo, float dureza, String cor, 
-                   String brilho, String toxicidade, int siteIdSite) {
+    public Mineral(String nome, String tipo, float dureza, String cor,
+            String brilho, String toxicidade, Site site) {
         this.nome = nome;
         this.tipo = tipo;
         this.dureza = dureza;
         this.cor = cor;
         this.brilho = brilho;
         this.toxicidade = toxicidade;
-        this.siteIdSite = siteIdSite;
+        this.site = site;
     }
 
-    // ✅ Construtor para SELECT (com ID)
-    public Mineral(int idminerais, String nome, String tipo, float dureza, 
-                   String cor, String brilho, String toxicidade, int siteIdSite) {
+    // ✅onstrutor para SELECT (com ID)
+    public Mineral(int idminerais, String nome, String tipo, float dureza,
+            String cor, String brilho, String toxicidade, Site site) {
         this.idminerais = idminerais;
         this.nome = nome;
         this.tipo = tipo;
@@ -35,10 +44,10 @@ public class Mineral {
         this.cor = cor;
         this.brilho = brilho;
         this.toxicidade = toxicidade;
-        this.siteIdSite = siteIdSite;
+        this.site = site;
     }
 
-    // ✅ Getters e Setters
+    // Getters e Setters
     public int getIdminerais() {
         return idminerais;
     }
@@ -95,15 +104,6 @@ public class Mineral {
         this.toxicidade = toxicidade;
     }
 
-    public int getSiteIdSite() {
-        return siteIdSite;
-    }
-
-    public void setSiteIdSite(int siteIdSite) {
-        this.siteIdSite = siteIdSite;
-    }
-
-
     @Override
     public String toString() {
         return "Mineral{" +
@@ -114,15 +114,13 @@ public class Mineral {
                 ", cor='" + cor + '\'' +
                 ", brilho='" + brilho + '\'' +
                 ", toxicidade='" + toxicidade + '\'' +
-                ", siteId=" + siteIdSite +
+                ", site=" + site +
                 '}';
     }
 
-
     public String exibirDetalhes() {
         return String.format(
-            "ID: %d | %s | %s | Dureza: %.1f | Cor: %s | Brilho: %s | Toxicidade: %s",
-            idminerais, nome, tipo, dureza, cor, brilho, toxicidade
-        );
+                "ID: %d | %s | %s | Dureza: %.1f | Cor: %s | Brilho: %s | Toxicidade: %s",
+                idminerais, nome, tipo, dureza, cor, brilho, toxicidade);
     }
 }
