@@ -27,21 +27,4 @@ public class UsuarioController {
         }
     }
 
-    public User buscarPorCredenciais(String nome, String instituicao) {
-        try {
-            return userDAO.buscarPorCredenciais(nome, instituicao);
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar usuário: " + e.getMessage());
-            return null;
-        }
-    }
-
-    public User buscarPorId(int id) {
-        try {
-            return userDAO.buscarPorId(id);
-        } catch (SQLException e) {
-            System.err.println("Erro ao buscar usuário por ID: " + e.getMessage());
-            return null;
-        }
-    }
 }

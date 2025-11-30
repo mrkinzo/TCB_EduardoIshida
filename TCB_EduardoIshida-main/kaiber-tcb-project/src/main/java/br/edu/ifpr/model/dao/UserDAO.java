@@ -27,43 +27,4 @@ public class UserDAO {
         }
     }
 
-    // SQL query
-    public User buscarPorCredenciais(String nome, String instituicao) throws SQLException {
-        String sql = "SELECT * FROM user WHERE nome = ? AND instituicao = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nome);
-            stmt.setString(2, instituicao);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    User user = new User();
-                    user.setIduser(rs.getInt("iduser"));
-                    user.setName(rs.getString("nome"));
-                    user.setInstitution(rs.getString("instituicao"));
-                    user.setRole(rs.getString("cargo"));
-                    return user;
-                }
-                return null;
-            }
-        }
-    }
-
-    public User buscarPorId(int id) throws SQLException {
-        String sql = "SELECT * FROM user WHERE iduser = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    User user = new User();
-                    user.setIduser(rs.getInt("iduser"));
-                    user.setName(rs.getString("nome"));
-                    user.setInstitution(rs.getString("instituicao"));
-                    user.setRole(rs.getString("cargo"));
-                    return user;
-                }
-                return null;
-            }
-        }
-    }
 }

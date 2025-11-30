@@ -1,19 +1,19 @@
 package br.edu.ifpr;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import br.edu.ifpr.controller.EmprestimoController;
 import br.edu.ifpr.controller.MineralController;
 import br.edu.ifpr.controller.RochaController;
-import br.edu.ifpr.controller.UsuarioController;
 import br.edu.ifpr.controller.SiteController;
+import br.edu.ifpr.controller.UsuarioController;
 import br.edu.ifpr.model.Emprestimo;
 import br.edu.ifpr.model.Mineral;
 import br.edu.ifpr.model.Rocha;
 import br.edu.ifpr.model.Site;
 import br.edu.ifpr.model.User;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 public class Main {
     private static Scanner LER = new Scanner(System.in);
@@ -168,8 +168,7 @@ public class Main {
         System.out.print("Toxicidade: ");
         String toxicidade = LER.nextLine();
 
-        Site site;
-        site = new Site(0, "", "", "", "");
+        Site site = new Site(0, "", "", "", "");
         cadastrarSite(site);
         Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, site);
         mineralCtrl.cadastrarMineral(mineral);
