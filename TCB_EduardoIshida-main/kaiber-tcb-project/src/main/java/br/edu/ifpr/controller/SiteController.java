@@ -25,18 +25,4 @@ public class SiteController {
             e.printStackTrace();
         }
     }
-
-    // ✅ CORREÇÃO: Implementar busca real
-    public Site buscarSitePorId(int id) {
-        // Por enquanto retorna null - implementar quando SiteDAO tiver o método
-        System.out.println("Busca de site por ID ainda não implementada");
-        return null;
-    }
-
-    // ✅ CORREÇÃO: Implementar listagem real
-    public List<Site> listarTodosSites() {
-        // Por enquanto retorna lista vazia - implementar quando SiteDAO tiver o método
-        System.out.println("Listagem de sites ainda não implementada");
-        return new java.util.ArrayList<>();
-    }
 }

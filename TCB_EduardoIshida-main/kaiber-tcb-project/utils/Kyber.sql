@@ -85,8 +85,6 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `Kyber`.`usuario`
 -- -----------------------------------------------------
-ALTER TABLE `Kyber`.`user` 
-MODIFY COLUMN `iduser` INT NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `Kyber`.`user` 
 MODIFY COLUMN `iduser` INT NOT NULL AUTO_INCREMENT;
@@ -168,6 +166,18 @@ ENGINE = InnoDB;
 
 ALTER TABLE `Kyber`.`emprestimo` 
 MODIFY COLUMN `idemprestimo` INT NOT NULL AUTO_INCREMENT;
+ALTER TABLE `Kyber`.`emprestimo` 
+DROP FOREIGN KEY `fk_emprestimo_usuario1`;
+
+ALTER TABLE `Kyber`.`emprestimo` 
+CHANGE COLUMN `usuario_idusuario` `usuario_iduser` INT NOT NULL;
+
+ALTER TABLE `Kyber`.`emprestimo` 
+ADD CONSTRAINT `fk_emprestimo_user`
+  FOREIGN KEY (`usuario_iduser`)
+  REFERENCES `Kyber`.`user` (`iduser`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
 
 -- Corrigir tipo de dados na tabela minerais (site_idsite deve ser INT)
 ALTER TABLE `Kyber`.`minerais` 

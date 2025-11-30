@@ -27,8 +27,9 @@ public class UserDAO {
         }
     }
 
+    // SQL query
     public User buscarPorCredenciais(String nome, String instituicao) throws SQLException {
-        String sql = "SELECT * FROM user WHERE iduser = ?";
+        String sql = "SELECT * FROM user WHERE nome = ? AND instituicao = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nome);
             stmt.setString(2, instituicao);
@@ -36,7 +37,7 @@ public class UserDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
-                    user.setIduser(rs.getInt("idusuario"));
+                    user.setIduser(rs.getInt("iduser"));
                     user.setName(rs.getString("nome"));
                     user.setInstitution(rs.getString("instituicao"));
                     user.setRole(rs.getString("cargo"));
@@ -55,7 +56,7 @@ public class UserDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
-                    user.setIduser(rs.getInt("idusuario"));
+                    user.setIduser(rs.getInt("iduser"));
                     user.setName(rs.getString("nome"));
                     user.setInstitution(rs.getString("instituicao"));
                     user.setRole(rs.getString("cargo"));

@@ -7,12 +7,8 @@ public class Site {
     private String pais;
     private String propriedadeprivada;
 
-    // ✅ Construtor corrigido
-    public Site(String nome, int par, String cidade, String pais, int par1) {
-        this.nome = nome;
-        this.cidade = cidade;
-        this.pais = pais;
-        this.propriedadeprivada = propriedadeprivada;
+    public Site(String string, int aInt, String string1, String string2, boolean equalsIgnoreCase) {
+
     }
 
     // Construtor para SELECT
@@ -24,10 +20,14 @@ public class Site {
         this.propriedadeprivada = propriedadeprivada;
     }
 
-    public Site(String string, int int1, String string2, String string3, boolean equalsIgnoreCase, boolean b) {
-        // TODO Auto-generated constructor stub
+    // Construtor para RochaDAO
+    public Site(int idsite, String nome, String cidade, String pais, boolean propriedadePrivada) {
+        this.idsite = idsite;
+        this.nome = nome;
+        this.cidade = cidade;
+        this.pais = pais;
+        this.propriedadeprivada = propriedadePrivada ? "Sim" : "Não";
     }
-
 
     public int getIdsite() {
         return idsite;
@@ -69,4 +69,14 @@ public class Site {
         this.propriedadeprivada = propriedadeprivada;
     }
 
+    @Override
+    public String toString() {
+        return "Site{" +
+                "id=" + idsite +
+                ", nome='" + nome + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", pais='" + pais + '\'' +
+                ", propriedadePrivada='" + propriedadeprivada + '\'' +
+                '}';
+    }
 }

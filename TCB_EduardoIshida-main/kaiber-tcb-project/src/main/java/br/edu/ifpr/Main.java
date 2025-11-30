@@ -96,21 +96,20 @@ public class Main {
                     cadastrarMineral();
                     break;
                 case 3:
-                    cadastrarSite();
+
+                    realizarEmprestimoPorID();
+
                     break;
                 case 4:
-                    realizarEmprestimoPorID();
-                    break;
-                case 5:
                     listarMeusEmprestimos();
                     break;
-                case 6:
+                case 5:
                     devolverEmprestimo();
                     break;
-                case 7:
+                case 6:
                     consultarMinerais();
                     break;
-                case 8:
+                case 7:
                     consultarRochas();
                     break;
                 case 0:
@@ -141,31 +140,9 @@ public class Main {
         boolean gem = LER.nextBoolean();
         LER.nextLine(); // limpar buffer
 
-        // Listar sites disponíveis
-        System.out.println("\n--- SITES DISPONÍVEIS ---");
-        List<Site> sites = siteCtrl.listarTodosSites();
-        if (sites == null || sites.isEmpty()) {
-            System.out.println(" Nenhum site cadastrado. Cadastre um site primeiro.");
-            return;
-        }
+        Site site = new Site("", 0, "", "", false);
+        cadastrarSite(site);
 
-        for (Site site : sites) {
-            System.out.println("ID: " + site.getIdsite() + " | " + site.getNome() +
-                    " | " + site.getCidade() + ", " + site.getPais());
-        }
-
-        System.out.print("\nID do Site: ");
-        int siteId = LER.nextInt();
-        LER.nextLine();
-
-        // Buscar site do banco
-        Site site = siteCtrl.buscarSitePorId(siteId);
-        if (site == null) {
-            System.out.println(" Site não encontrado!");
-            return;
-        }
-
-        // Criar e cadastrar rocha
         Rocha rocha = new Rocha(nome, tipo, dureza, corPrincipal, gem, site);
         rochaCtrl.cadastrarRocha(rocha);
     }
@@ -192,47 +169,29 @@ public class Main {
         System.out.print("Toxicidade: ");
         String toxicidade = LER.nextLine();
 
-        // Listar sites disponíveis
-        System.out.println("\n--- SITES DISPONÍVEIS ---");
-        List<Site> sites = siteCtrl.listarTodosSites();
-        if (sites == null || sites.isEmpty()) {
-            System.out.println(" Nenhum site cadastrado. Cadastre um site primeiro.");
-            return;
-        }
-
-        for (Site site : sites) {
-            System.out.println("ID: " + site.getIdsite() + " | " + site.getNome() +
-                    " | " + site.getCidade() + ", " + site.getPais());
-        }
-
-        System.out.print("\nID do Site: ");
-        int siteId = LER.nextInt();
-        LER.nextLine(); // limpar buffer
-
-        // Criar e cadastrar mineral
-        Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, siteId);
+        Site site = new Site("", 0, "", "", false);
+        cadastrarSite(site);
+        Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, site.getIdsite());
         mineralCtrl.cadastrarMineral(mineral);
     }
 
-    public static void cadastrarSite() {
+    public static void cadastrarSite(Site site) {
         System.out.println("\n=== CADASTRAR SITE ===");
 
         System.out.print("Nome do site: ");
-        String nome = LER.nextLine();
+        site.setNome(LER.nextLine());
 
         System.out.print("Cidade: ");
-        String cidade = LER.nextLine();
+        site.setCidade(LER.nextLine());
 
         System.out.print("País: ");
-        String pais = LER.nextLine();
+        site.setPais(LER.nextLine());
 
         System.out.print("Propriedade privada? (true/false): ");
-        boolean propriedadePrivada = LER.nextBoolean();
-        LER.nextLine(); // limpar buffer
-
+        site.setPropriedadeprivada(LER.nextBoolean() ? "Sim" : "Não");
+        LER.nextLine(); // lim
         // Criar site
-    Site site = new Site(0, nome, cidade, pais, propriedadePrivada ? "Sim" : "Não");
-        // Cadastrar site
+
         siteCtrl.cadastrarSite(site);
     }
 
@@ -399,7 +358,7 @@ public class Main {
         if (minerais == null || minerais.isEmpty()) {
             System.out.println("Nenhum mineral cadastrado.");
         } else {
-            System.out.println("📊 Total de minerais: " + minerais.size());
+            System.out.println("Total de minerais: " + minerais.size());
             for (Mineral mineral : minerais) {
                 System.out.printf("ID: %d | %s | %s | Dureza: %.1f | Cor: %s\n",
                         mineral.getIdminerais(), mineral.getNome(), mineral.getTipo(),
@@ -426,7 +385,35 @@ public class Main {
     }
 
     private static List<Rocha> selecionarRochasPorID(List<Rocha> todasRochas) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Rocha> selecionados = new ArrayList<>();
+
+        System.out.print("\nDigite os IDs das rochas (separados por vírgula) ou 0 para pular: ");
+        String input = LER.nextLine().trim();
+
+        if (input.equals("0") || input.isEmpty()) {
+            return selecionados;
+        }
+
+        String[] ids = input.split(",");
+        for (String idStr : ids) {
+            try {
+                int idProcurado = Integer.parseInt(idStr.trim());
+
+                Rocha rochaEncontrada = rochaCtrl.buscarRochaPorId(idProcurado);
+
+                if (rochaEncontrada != null) {
+                    selecionados.add(rochaEncontrada);
+                    System.out.println("Rocha adicionada: " + rochaEncontrada.getNome());
+                } else {
+                    System.out.println(" Rocha ID " + idProcurado + " não encontrada");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("ID inválido: " + idStr);
+            }
+        }
+
+        return selecionados;
     }
 
 }

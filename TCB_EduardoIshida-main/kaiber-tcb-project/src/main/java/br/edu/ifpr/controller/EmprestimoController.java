@@ -23,15 +23,17 @@ public class EmprestimoController {
             return emprestimoDAO.realizarEmprestimo(userId, minerais, rochas);
         } catch (SQLException e) {
             System.err.println("Erro ao realizar empréstimo: " + e.getMessage());
+            e.printStackTrace();
             return -1;
         }
     }
 
     public List<Emprestimo> buscarEmprestimosPorUsuario(int usuarioId) {
         try {
-            // Filtrar por usuário
             List<Emprestimo> todos = emprestimoDAO.listarTodos();
-            todos.removeIf(emp -> emp.getUsuarioId() != usuarioId);
+            if (todos != null) {
+                todos.removeIf(emp -> emp.getUsuarioId() != usuarioId);
+            }
             return todos;
         } catch (SQLException e) {
             System.err.println("Erro ao buscar empréstimos: " + e.getMessage());
@@ -42,8 +44,10 @@ public class EmprestimoController {
     public void devolverEmprestimo(int emprestimoId) {
         try {
             emprestimoDAO.devolverEmprestimo(emprestimoId);
+            System.out.println("Empréstimo #" + emprestimoId + " devolvido com sucesso!");
         } catch (SQLException e) {
             System.err.println("Erro ao devolver empréstimo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
