@@ -139,7 +139,7 @@ public class Main {
         System.out.print("É gema? (true/false): ");
         boolean gem = LER.nextBoolean();
         LER.nextLine(); // limpar buffer
-        Site site = new Site();
+        Site site = new Site(0, "", "", "", "");
         cadastrarSite(site);
 
         Rocha rocha = new Rocha(nome, tipo, dureza, corPrincipal, gem, site);
@@ -168,7 +168,8 @@ public class Main {
         System.out.print("Toxicidade: ");
         String toxicidade = LER.nextLine();
 
-        Site site = new Site();
+        Site site;
+        site = new Site(0, "", "", "", "");
         cadastrarSite(site);
         Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, site);
         mineralCtrl.cadastrarMineral(mineral);

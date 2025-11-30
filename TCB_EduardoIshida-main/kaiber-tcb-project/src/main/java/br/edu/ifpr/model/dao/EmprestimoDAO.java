@@ -44,7 +44,7 @@ public class EmprestimoDAO {
                         stmt.setInt(1, emprestimoId);
                         stmt.setInt(2, userId);
                         stmt.setInt(3, m.getIdminerais());
-                        stmt.setString(4, String.valueOf(m.getSiteIdSite())); // site_idsite é VARCHAR
+                        stmt.setString(4, String.valueOf(m.getSite().getIdsite())); // site_idsite é VARCHAR
                         stmt.addBatch();
                     }
                     stmt.executeBatch();
@@ -76,13 +76,13 @@ public class EmprestimoDAO {
         }
     }
 
-    //  Buscar empréstimo por ID
+    // Buscar empréstimo por ID
     public Emprestimo buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM emprestimo WHERE idemprestimo = ?";
-        
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Emprestimo emp = new Emprestimo();
@@ -101,10 +101,10 @@ public class EmprestimoDAO {
     public List<Emprestimo> listarTodos() throws SQLException {
         String sql = "SELECT * FROM emprestimo ORDER BY dataEmp DESC";
         List<Emprestimo> emprestimos = new ArrayList<>();
-        
+
         try (PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            
+                ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 Emprestimo emp = new Emprestimo();
                 emp.setIdemprestimo(rs.getInt("idemprestimo"));
@@ -117,21 +117,21 @@ public class EmprestimoDAO {
         return emprestimos;
     }
 
-    // ✅ NOVO: Devolver empréstimo
+    // NOVO: Devolver empréstimo
     public void devolverEmprestimo(int emprestimoId) throws SQLException {
         String sql = "DELETE FROM emprestimo_has_minerais WHERE emprestimo_idemprestimo = ?";
-        
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, emprestimoId);
             stmt.executeUpdate();
         }
-        
+
         sql = "DELETE FROM emprestimo_has_Rochas WHERE emprestimo_idemprestimo = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, emprestimoId);
             stmt.executeUpdate();
         }
-        
+
         sql = "DELETE FROM emprestimo WHERE idemprestimo = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, emprestimoId);
