@@ -100,7 +100,7 @@ public class RochaDAO {
             rs.getInt("site_idsite"),
             rs.getString("site_nome"),
             rs.getString("site_cidade"),
-            rs.getString("site_estado"),
+            rs.getString("site_estado"),  
             rs.getString("site_pais"),
             rs.getBoolean("site_propriedadeprivada"));
         // Criar e retornar Rocha
@@ -113,6 +113,7 @@ public class RochaDAO {
                 rs.getBoolean("isitgem"),
                 site);
     }
+    
 
     private List<Rocha> criarListaRochasFromResultSet(ResultSet rs) throws SQLException {
         List<Rocha> rochas = new ArrayList<>();
