@@ -132,11 +132,29 @@ public class Main {
         boolean gem = LER.nextBoolean();
         LER.nextLine(); // limpar buffer
 
-        Site site = new Site("", "", "", "", false);
-        cadastrarSite(site);
+        System.out.println("\n=== CADASTRAR SITE DO MINERAL ===");
+        System.out.println("1 para site existente (selecione o sirte cadastrado. 2 para cadastrar site)");
+              switch (LER.nextInt()) {
+                  case 1:
+                      siteCtrl.listarSites();
+                      System.out.print("Digite o ID do site existente: ");
+                      Site x=new Site();
+                      int siteId = LER.nextInt();
+                      x= siteCtrl.selecionarSitePorID(siteId);
+                     Rocha rocha=new Rocha();
+                     rochaCtrl.cadastrarRocha(rocha);
+      
+                      break;
+                      case 2:
+                          Site site = new Site();
+                          cadastrarSite(site);
+                          Rocha rocha1=new Rocha();
+                     rochaCtrl.cadastrarRocha(rocha1);
+                      break;
+                  default:
+                      break;
+              }
 
-        Rocha rocha = new Rocha(nome, tipo, dureza, corPrincipal, gem, site);
-        rochaCtrl.cadastrarRocha(rocha);
     }
 
     public static void cadastrarMineral() {
@@ -161,10 +179,28 @@ public class Main {
         System.out.print("Toxicidade: ");
         String toxicidade = LER.nextLine();
 
-        Site site = new Site(0, "", "", "", "", false);
-        cadastrarSite(site);
-        Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, site);
-        mineralCtrl.cadastrarMineral(mineral);
+  System.out.println("\n=== CADASTRAR SITE DO MINERAL ===");
+  System.out.println("1 para site existente (selecione o sirte cadastrado. 2 para cadastrar site)");
+        switch (LER.nextInt()) {
+            case 1:
+                siteCtrl.listarSites();
+                System.out.print("Digite o ID do site existente: ");
+                Site x=new Site();
+                int siteId = LER.nextInt();
+                x= siteCtrl.selecionarSitePorID(siteId);
+                Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, x);
+                mineralCtrl.cadastrarMineral(mineral);
+
+                break;
+                case 2:
+                    Site site = new Site();
+                    cadastrarSite(site);
+                    Mineral mineral2 = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, site);
+                    mineralCtrl.cadastrarMineral(mineral2);
+                break;
+            default:
+                break;
+        }
     }
 
     public static void cadastrarSite(Site site) {

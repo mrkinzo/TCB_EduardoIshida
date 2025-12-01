@@ -13,7 +13,7 @@ public class MineralDAO {
         this.conn = conn;
     }
 
-    // ✅ INSERIR
+    //  INSERIR
     public void inserir(Mineral mineral) throws SQLException {
         String sql = "INSERT INTO minerais (nome, tipo, dureza, cor, brilho, toxicidade, site_idsite) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -86,7 +86,7 @@ public class MineralDAO {
         }
     }
 
-    // ✅ DELETAR
+    // DELETAR
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM minerais WHERE idminerais = ?";
 
@@ -98,7 +98,7 @@ public class MineralDAO {
 
     // MÉTODO AUXILIAR PRIVADO
     private Mineral criarMineralFromResultSet(ResultSet rs) throws SQLException {
-        Site site = new Site(0, "", "", "", "");
+        Site site = new Site(0, "", "", "", "", false);
         site.setIdsite(rs.getInt("site_idsite"));
 
         Mineral mineral = new Mineral(

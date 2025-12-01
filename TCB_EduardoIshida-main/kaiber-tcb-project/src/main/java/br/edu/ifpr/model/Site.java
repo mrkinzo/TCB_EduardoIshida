@@ -9,6 +9,11 @@ public class Site {
     private String pais;
     private boolean propriedadeprivada; // "Sim" ou "Não"
 
+    
+
+    public Site() {
+    }
+
     // Construtor usado no SELECT
     public Site(int idsite, String nome, String cidade, String estado, String pais, boolean propriedadeprivada) {
         this.idsite = idsite;

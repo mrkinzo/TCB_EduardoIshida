@@ -1,6 +1,5 @@
 package br.edu.ifpr.model;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class Emprestimo {
