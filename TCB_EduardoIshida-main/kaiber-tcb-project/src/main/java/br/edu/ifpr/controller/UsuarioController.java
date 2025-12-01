@@ -25,4 +25,25 @@ public class UsuarioController {
         }
     }
 
+    public  void listarUsers() {
+        try {
+            for (User user : UserDAO.listarUsers()) {
+                System.out.println("ID: " + user.getIduser() + ", Nome: " + user.getName() +
+                        ", Instituição: " + user.getInstitution() + ", Cargo: " + user.getRole());
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar usuários: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public User selecionarPorID(int userId) {
+        try {
+            return UserDAO.selecionarPorID(userId);
+        } catch (SQLException e) {
+            System.err.println("Erro ao selecionar usuário por ID: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

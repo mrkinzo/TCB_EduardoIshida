@@ -27,17 +27,33 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("=== SISTEMA KYBER - GERENCIAMENTO GEOLÓGICO ===");
+        System.out.println("Usuário existente 1 para sim 2 para não");
+        User usuarioLogado = new User();
+        if (LER.nextInt() == 1) {
 
-        // Registro automático do usuário
-        registrarUsuario();
+            usuarioCtrl.listarUsers();
+            System.out.print("Digite o ID do seu usuário para login: ");
+            int userId = LER.nextInt();
+            usuarioLogado = usuarioCtrl.selecionarPorID(userId);
+            if (usuarioLogado != null) {
+                System.out.println("\n----==== Bem vindo " + usuarioLogado.getName() + " ====----");
+                exibirMenuPrincipal();
+            } else {
+                System.out.println(" Erro ao registrar usuário. Encerrando o sistema.");
+            }
 
-        if (usuarioLogado != null) {
-            System.out.println("\n----==== Bem vindo " + usuarioLogado.getName() + " ====----");
-            exibirMenuPrincipal();
         } else {
-            System.out.println(" Erro ao registrar usuário. Encerrando o sistema.");
-        }
+            if (LER.nextInt() == 2) {
+                registrarUsuario();
 
+                if (usuarioLogado != null) {
+                    System.out.println("\n----==== Bem vindo " + usuarioLogado.getName() + " ====----");
+                    exibirMenuPrincipal();
+                } else {
+                    System.out.println(" Erro ao registrar usuário. Encerrando o sistema.");
+                }
+            }
+        }
     }
 
     public static void registrarUsuario() {
