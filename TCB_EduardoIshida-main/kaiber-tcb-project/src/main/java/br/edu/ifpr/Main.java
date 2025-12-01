@@ -72,9 +72,12 @@ public class Main {
             System.out.println("5 - Devolver Empréstimo");
             System.out.println("6 - Consultar Minerais");
             System.out.println("7 - Consultar Rochas");
+            System.out.println("8 - Atualizar Rocha");
+            System.out.println("9 - Atualizar Mineral");
+            System.out.println("10 - apagar Rochas");
+            System.out.println("11 - apagar Minerais");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
-
             int opcao = LER.nextInt();
             LER.nextLine();
 
@@ -100,12 +103,321 @@ public class Main {
                 case 7:
                     consultarRochas();
                     break;
+                case 8:
+                    atualizarRochas();
+                    break;
+                case 9:
+                    atualizarMinerais();
+                    break;
+                case 10:
+                    apagarRochas();
+                    break;
+                case 11:
+                    apagarMinerais();
+                    break;
                 case 0:
                     System.out.println("Saindo do sistema");
                     return;
                 default:
                     System.out.println("Opção inválida.");
             }
+        }
+    }
+
+    public static void apagarRochas() {
+        System.out.println("\n=== APAGAR ROCHAS ===");
+
+        List<Rocha> rochas = rochaCtrl.listarTodasRochas();
+
+        if (rochas == null || rochas.isEmpty()) {
+            System.out.println("Nenhuma rocha cadastrada no sistema.");
+            return;
+        }
+
+        System.out.println("Rochas disponíveis para exclusão:");
+        for (Rocha rocha : rochas) {
+            System.out.println(rocha.exibirDetalhes());
+        }
+
+        System.out.print("\nDigite o ID da rocha que deseja apagar: ");
+        int rochaId = LER.nextInt();
+        LER.nextLine();
+
+        Rocha rocha = rochaCtrl.buscarRochaPorId(rochaId);
+
+        if (rocha == null) {
+            System.out.println("Rocha não encontrada com ID: " + rochaId);
+            return;
+        }
+
+        System.out.println("\nRocha encontrada:");
+        System.out.println(rocha.exibirDetalhes());
+
+        // Confirmar exclusão
+        System.out.print("\nConfirmar exclusão desta rocha? (s/n): ");
+        String confirmacao = LER.nextLine();
+        if (confirmacao.equalsIgnoreCase("s")) {
+            rochaCtrl.deletarRocha(rochaId);
+            System.out.println("Rocha apagada com sucesso!");
+        } else {
+            System.out.println("Exclusão cancelada.");
+        }
+    }
+
+    public static void apagarMinerais() {
+        System.out.println("\n=== APAGAR MINERAIS ===");
+
+        List<Mineral> minerais = mineralCtrl.listarTodosMinerais();
+
+        if (minerais == null || minerais.isEmpty()) {
+            System.out.println("Nenhum mineral cadastrado no sistema.");
+            return;
+        }
+
+        System.out.println("Minerais disponíveis para exclusão:");
+        for (Mineral mineral : minerais) {
+            System.out.println(mineral.exibirDetalhes());
+        }
+
+        System.out.print("\nDigite o ID do mineral que deseja apagar: ");
+        int mineralId = LER.nextInt();
+        LER.nextLine();
+
+        Mineral mineral = mineralCtrl.buscarMineralPorId(mineralId);
+
+        if (mineral == null) {
+            System.out.println("Mineral não encontrado com ID: " + mineralId);
+            return;
+        }
+
+        System.out.println("\nMineral encontrado:");
+        System.out.println(mineral.exibirDetalhes());
+
+        // Confirmar exclusão
+        System.out.print("\nConfirmar exclusão deste mineral? (s/n): ");
+        String confirmacao = LER.nextLine();
+        if (confirmacao.equalsIgnoreCase("s")) {
+            mineralCtrl.deletarMineral(mineralId);
+            System.out.println("Mineral apagado com sucesso!");
+        } else {
+            System.out.println("Exclusão cancelada.");
+        }
+    }
+
+    public static void atualizarMinerais() {
+        System.out.println("\n=== ATUALIZAR MINERAIS ===");
+
+        List<Mineral> minerais = mineralCtrl.listarTodosMinerais();
+
+        if (minerais == null || minerais.isEmpty()) {
+            System.out.println("Nenhum mineral cadastrado no sistema.");
+            return;
+        }
+
+        System.out.println("Minerais disponíveis para atualização:");
+        for (Mineral mineral : minerais) {
+            System.out.println(mineral.exibirDetalhes());
+        }
+
+        System.out.print("\nDigite o ID do mineral que deseja atualizar: ");
+        int mineralId = LER.nextInt();
+        LER.nextLine();
+
+        Mineral mineral = mineralCtrl.buscarMineralPorId(mineralId);
+
+        if (mineral == null) {
+            System.out.println("Mineral não encontrado com ID: " + mineralId);
+            return;
+        }
+
+        System.out.println("\nMineral encontrado:");
+        System.out.println(mineral.exibirDetalhes());
+
+        // Coletar novos dados (similar ao método de rochas)
+        System.out.println("\nDigite os novos dados (ou Enter para manter o valor atual):");
+
+        System.out.print("Nome [" + mineral.getNome() + "]: ");
+        String novoNome = LER.nextLine();
+        if (!novoNome.trim().isEmpty()) {
+            mineral.setNome(novoNome);
+        }
+
+        System.out.print("Tipo [" + mineral.getTipo() + "]: ");
+        String novoTipo = LER.nextLine();
+        if (!novoTipo.trim().isEmpty()) {
+            mineral.setTipo(novoTipo);
+        }
+
+        System.out.print("Dureza [" + mineral.getDureza() + "]: ");
+        String novaDurezaStr = LER.nextLine();
+        if (!novaDurezaStr.trim().isEmpty()) {
+            try {
+                mineral.setDureza(Float.parseFloat(novaDurezaStr));
+            } catch (NumberFormatException e) {
+                System.out.println("Valor inválido para dureza. Mantendo valor atual.");
+            }
+        }
+
+        System.out.print("Cor [" + mineral.getCor() + "]: ");
+        String novaCor = LER.nextLine();
+        if (!novaCor.trim().isEmpty()) {
+            mineral.setCor(novaCor);
+        }
+
+        System.out.print("Brilho [" + mineral.getBrilho() + "]: ");
+        String novoBrilho = LER.nextLine();
+        if (!novoBrilho.trim().isEmpty()) {
+            mineral.setBrilho(novoBrilho);
+        }
+
+        System.out.print("Toxicidade [" + mineral.getToxicidade() + "]: ");
+        String novaToxicidade = LER.nextLine();
+        if (!novaToxicidade.trim().isEmpty()) {
+            mineral.setToxicidade(novaToxicidade);
+        }
+
+        // Atualizar site
+        System.out.println("\nDeseja alterar o site deste mineral?");
+        System.out.println("1 - Manter site atual: " + mineral.getSite().getNome());
+        System.out.println("2 - Alterar para outro site");
+        System.out.print("Escolha: ");
+
+        int opcaoSite = LER.nextInt();
+        LER.nextLine();
+
+        if (opcaoSite == 2) {
+            System.out.println("\nSites disponíveis:");
+            siteCtrl.listarSites();
+
+            System.out.print("Digite o ID do novo site: ");
+            int novoSiteId = LER.nextInt();
+            LER.nextLine();
+
+            Site novoSite = siteCtrl.selecionarSitePorID(novoSiteId);
+            if (novoSite != null) {
+                mineral.setSite(novoSite);
+            } else {
+                System.out.println("Site não encontrado. Mantendo site atual.");
+            }
+        }
+
+        // Confirmar
+        System.out.println("\n--- RESUMO DA ATUALIZAÇÃO ---");
+        System.out.println(mineral.exibirDetalhes());
+        System.out.print("\nConfirmar atualização? (s/n): ");
+
+        String confirmacao = LER.nextLine();
+        if (confirmacao.equalsIgnoreCase("s")) {
+            mineralCtrl.atualizarMineral(mineral);
+            System.out.println("Mineral atualizado com sucesso!");
+        } else {
+            System.out.println("Atualização cancelada.");
+        }
+    }
+
+    public static void atualizarRochas() {
+        System.out.println("\n=== ATUALIZAR ROCHAS ===");
+
+        // 1. Listar todas as rochas primeiro
+        List<Rocha> rochas = rochaCtrl.listarTodasRochas();
+
+        if (rochas == null || rochas.isEmpty()) {
+            System.out.println("Nenhuma rocha cadastrada no sistema.");
+            return;
+        }
+
+        System.out.println("Rochas disponíveis para atualização:");
+        for (Rocha rocha : rochas) {
+            System.out.println(rocha.exibirDetalhes());
+        }
+
+        // 2. Pedir ID da rocha a atualizar
+        System.out.print("\nDigite o ID da rocha que deseja atualizar: ");
+        int rochaId = LER.nextInt();
+        LER.nextLine(); // Limpar buffer
+
+        // 3. Buscar a rocha pelo ID
+        Rocha rocha = rochaCtrl.buscarRochaPorId(rochaId);
+
+        if (rocha == null) {
+            System.out.println("Rocha não encontrada com ID: " + rochaId);
+            return;
+        }
+
+        System.out.println("\nRocha encontrada:");
+        System.out.println(rocha.exibirDetalhes());
+
+        // 4. Coletar novos dados
+        System.out.println("\nDigite os novos dados (ou Enter para manter o valor atual):");
+
+        System.out.print("Nome [" + rocha.getNome() + "]: ");
+        String novoNome = LER.nextLine();
+        if (!novoNome.trim().isEmpty()) {
+            rocha.setNome(novoNome);
+        }
+
+        System.out.print("Tipo [" + rocha.getTipo() + "]: ");
+        String novoTipo = LER.nextLine();
+        if (!novoTipo.trim().isEmpty()) {
+            rocha.setTipo(novoTipo);
+        }
+
+        System.out.print("Dureza [" + rocha.getDureza() + "]: ");
+        String novaDureza = LER.nextLine();
+        if (!novaDureza.trim().isEmpty()) {
+            rocha.setDureza(novaDureza);
+        }
+
+        System.out.print("Cor principal [" + rocha.getCorPrincipal() + "]: ");
+        String novaCor = LER.nextLine();
+        if (!novaCor.trim().isEmpty()) {
+            rocha.setCorPrincipal(novaCor);
+        }
+
+        System.out.print("É gema? [" + (rocha.isGem() ? "Sim" : "Não") + "] (true/false): ");
+        String novaGemStr = LER.nextLine();
+        if (!novaGemStr.trim().isEmpty()) {
+            rocha.setGem(Boolean.parseBoolean(novaGemStr));
+        }
+
+        // 5. Atualizar site (opcional)
+        System.out.println("\nDeseja alterar o site desta rocha?");
+        System.out.println("1 - Manter site atual: " + rocha.getSite().getNome());
+        System.out.println("2 - Alterar para outro site");
+        System.out.print("Escolha: ");
+
+        int opcaoSite = LER.nextInt();
+        LER.nextLine();
+
+        if (opcaoSite == 2) {
+            // Listar sites disponíveis
+            System.out.println("\nSites disponíveis:");
+            // Você precisa implementar um método para listar sites
+            siteCtrl.listarSites();
+
+            System.out.print("Digite o ID do novo site: ");
+            int novoSiteId = LER.nextInt();
+            LER.nextLine();
+
+            Site novoSite = siteCtrl.selecionarSitePorID(novoSiteId);
+            if (novoSite != null) {
+                rocha.setSite(novoSite);
+            } else {
+                System.out.println("Site não encontrado. Mantendo site atual.");
+            }
+        }
+
+        // 6. Confirmar atualização
+        System.out.println("\n--- RESUMO DA ATUALIZAÇÃO ---");
+        System.out.println(rocha.exibirDetalhes());
+        System.out.print("\nConfirmar atualização? (s/n): ");
+
+        String confirmacao = LER.nextLine();
+        if (confirmacao.equalsIgnoreCase("s")) {
+            rochaCtrl.atualizarRocha(rocha);
+            System.out.println("Rocha atualizada com sucesso!");
+        } else {
+            System.out.println("Atualização cancelada.");
         }
     }
 
@@ -471,5 +783,4 @@ public class Main {
 
         return selecionados;
     }
-
 }

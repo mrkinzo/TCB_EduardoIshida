@@ -35,7 +35,7 @@ public class MineralController {
 
     public List<Mineral> listarTodosMinerais() {
         try {
-            return mineralDAO.listarTodos();
+            return mineralDAO.ListarTodos();
         } catch (SQLException e) {
             System.err.println("Erro ao listar minerais: " + e.getMessage());
             return new ArrayList<>();
@@ -47,6 +47,14 @@ public class MineralController {
             mineralDAO.atualizar(mineral);
         } catch (SQLException e) {
             System.err.println("Erro ao atualizar mineral: " + e.getMessage());
+        }
+    }
+
+    public void deletarMineral(int mineralId) {
+        try {
+            mineralDAO.deletar(mineralId);
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar mineral: " + e.getMessage());
         }
     }
 }

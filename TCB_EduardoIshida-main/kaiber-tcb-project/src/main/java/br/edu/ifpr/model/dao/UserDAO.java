@@ -12,13 +12,13 @@ public class UserDAO {
 
     public void cadastrarUser(User user) throws SQLException {
         String sql = "INSERT INTO user (nome, instituicao, cargo) VALUES (?, ?, ?)";
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getInstitution());
             stmt.setString(3, user.getRole());
-            stmt.executeBatch();
-
-            // Obter o ID gerado
+            stmt.executeUpdate();  
+    
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     user.setIduser(generatedKeys.getInt(1));

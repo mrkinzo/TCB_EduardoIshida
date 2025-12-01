@@ -27,16 +27,19 @@ public class SiteController {
     }
     public  void listarSites() {
         try {
-            SiteDAO.Selecionar();
+            siteDAO.selecionarTodos();
+            for (Site site : siteDAO.selecionarTodos()) {
+                System.out.println(site);
+            }
         } catch (SQLException e) {
             System.err.println("Erro ao listar sites: " + e.getMessage());
             e.printStackTrace();
         }
     }
-    public  Site selecionarSitePorID(int idsite) {
+    public Site selecionarSitePorID(int idsite) {
         Site site = null;
         try {
-            site = SiteDAO.selecionarPorID(idsite);
+            site = siteDAO.selecionarPorID(idsite);  // TROCADO SiteDAO. por siteDAO.
         } catch (SQLException e) {
             System.err.println("Erro ao selecionar site por ID: " + e.getMessage());
             e.printStackTrace();

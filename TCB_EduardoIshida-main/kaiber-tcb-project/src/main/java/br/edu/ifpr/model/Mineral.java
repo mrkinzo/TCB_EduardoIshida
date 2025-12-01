@@ -22,7 +22,7 @@ public class Mineral {
     public Mineral() {
     }
 
-    // ✅ Construtor para INSERT (sem ID)
+    // Construtor para INSERT (sem ID)
     public Mineral(String nome, String tipo, float dureza, String cor,
             String brilho, String toxicidade, Site site) {
         this.nome = nome;
@@ -34,7 +34,7 @@ public class Mineral {
         this.site = site;
     }
 
-    // ✅onstrutor para SELECT (com ID)
+    // construtor para SELECT (com ID)
     public Mineral(int idminerais, String nome, String tipo, float dureza,
             String cor, String brilho, String toxicidade, Site site) {
         this.idminerais = idminerais;

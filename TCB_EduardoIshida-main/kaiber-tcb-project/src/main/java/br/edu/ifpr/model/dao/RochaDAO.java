@@ -16,8 +16,8 @@ public class RochaDAO {
     // INSERIR
     public void inserir(Rocha rocha) throws SQLException {
         String sql = "INSERT INTO Rochas (nome, tipo, dureza, corPrincipal, isitgem, site_idsite) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-
+                     "VALUES (?, ?, ?, ?, ?, ?)";
+    
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, rocha.getNome());
             stmt.setString(2, rocha.getTipo());
@@ -25,9 +25,8 @@ public class RochaDAO {
             stmt.setString(4, rocha.getCorPrincipal());
             stmt.setBoolean(5, rocha.isGem());
             stmt.setInt(6, rocha.getSite().getIdsite());
-            stmt.executeBatch();
-
-            // Obter o ID gerado
+            stmt.executeUpdate();  
+    
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     rocha.setIdRochas(generatedKeys.getInt(1));
@@ -35,7 +34,6 @@ public class RochaDAO {
             }
         }
     }
-
     // BUSCAR POR ID
     public Rocha buscarPorId(int id) throws SQLException {
         String sql = "SELECT r.*, s.nome as site_nome, s.cidade as site_cidade, s.pais as site_pais, s.propriedadeprivada as site_propriedadeprivada "
@@ -58,7 +56,7 @@ public class RochaDAO {
 
     // LISTAR TODAS
     public List<Rocha> listarTodas() throws SQLException {
-        String sql = "SELECT r.*, s.nome as site_nome, s.cidade as site_cidade, s.pais as site_pais, s.propriedadeprivada as site_propriedadeprivada "
+        String sql = "SELECT r.*, s.nome as site_nome, s.cidade as site_cidade,s.estado as site_estado ,s.pais as site_pais, s.propriedadeprivada as site_propriedadeprivada "
                 +
                 "FROM Rochas r " +
                 "INNER JOIN site s ON r.site_idsite = s.idsite " +

@@ -5,12 +5,10 @@ import br.edu.ifpr.model.dao.UserDAO;
 import br.edu.ifpr.model.dao.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class UsuarioController {
     private UserDAO userDAO;
     private Connection conn;
-    private static Scanner LER = new Scanner(System.in);
 
     public UsuarioController() {
         this.conn = ConnectionFactory.getConnection();
