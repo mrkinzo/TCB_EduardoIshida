@@ -25,7 +25,7 @@ public class RochaDAO {
             stmt.setString(4, rocha.getCorPrincipal());
             stmt.setBoolean(5, rocha.isGem());
             stmt.setInt(6, rocha.getSite().getIdsite());
-            stmt.executeUpdate();
+            stmt.executeBatch();
 
             // Obter o ID gerado
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {

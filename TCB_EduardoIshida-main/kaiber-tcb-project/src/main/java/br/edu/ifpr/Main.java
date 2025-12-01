@@ -38,7 +38,6 @@ public class Main {
             System.out.println(" Erro ao registrar usuário. Encerrando o sistema.");
         }
 
-       
     }
 
     public static void registrarUsuario() {
@@ -59,9 +58,8 @@ public class Main {
         // Cadastrar usuário
         usuarioCtrl.cadastrarUser(user);
 
-      
-            usuarioLogado = user;
-        
+        usuarioLogado = user;
+
     }
 
     public static void exibirMenuPrincipal() {
@@ -71,14 +69,14 @@ public class Main {
             System.out.println("2 - Cadastrar Mineral");
             System.out.println("3 - Realizar Empréstimo");
             System.out.println("4 - Listar Meus Empréstimos");
-            System.out.println("5 - Devolver emprestimo");
-            System.out.println("6 - Consultar Rochas");
+            System.out.println("5 - Devolver Empréstimo");
+            System.out.println("6 - Consultar Minerais");
             System.out.println("7 - Consultar Rochas");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
 
             int opcao = LER.nextInt();
-            LER.nextLine(); // Limpar buffer
+            LER.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -88,9 +86,7 @@ public class Main {
                     cadastrarMineral();
                     break;
                 case 3:
-
                     realizarEmprestimoPorID();
-
                     break;
                 case 4:
                     listarMeusEmprestimos();
@@ -108,13 +104,46 @@ public class Main {
                     System.out.println("Saindo do sistema");
                     return;
                 default:
-                    System.out.println(" Opção inválida!");
+                    System.out.println("Opção inválida.");
             }
         }
     }
 
     public static void cadastrarRocha() {
         System.out.println("\n=== CADASTRAR ROCHA ===");
+        System.out.println("Onde foi encontrada a rocha?");
+        System.out.println("1 - Usar site existente");
+        System.out.println("2 - Cadastrar novo site");
+        System.out.print("Escolha: ");
+
+        int opcao = LER.nextInt();
+        LER.nextLine(); // limpar buffer
+
+        Site siteEscolhido = null;
+
+        if (opcao == 1) {
+            siteCtrl.listarSites();
+
+            System.out.print("Digite o ID do site existente: ");
+            int siteId = LER.nextInt();
+            LER.nextLine(); // limpar buffer
+
+            siteEscolhido = siteCtrl.selecionarSitePorID(siteId);
+
+            if (siteEscolhido == null) {
+                System.out.println("Site não encontrado.");
+                return;
+            }
+
+        } else if (opcao == 2) {
+            Site novoSite = new Site();
+            cadastrarSite(novoSite);
+            siteEscolhido = novoSite;
+
+        } else {
+            System.out.println("Opção inválida.");
+            return;
+        }
 
         System.out.print("Nome da rocha: ");
         String nome = LER.nextLine();
@@ -132,33 +161,47 @@ public class Main {
         boolean gem = LER.nextBoolean();
         LER.nextLine(); // limpar buffer
 
-        System.out.println("\n=== CADASTRAR SITE DO MINERAL ===");
-        System.out.println("1 para site existente (selecione o sirte cadastrado. 2 para cadastrar site)");
-              switch (LER.nextInt()) {
-                  case 1:
-                      siteCtrl.listarSites();
-                      System.out.print("Digite o ID do site existente: ");
-                      Site x=new Site();
-                      int siteId = LER.nextInt();
-                      x= siteCtrl.selecionarSitePorID(siteId);
-                     Rocha rocha=new Rocha();
-                     rochaCtrl.cadastrarRocha(rocha);
-      
-                      break;
-                      case 2:
-                          Site site = new Site();
-                          cadastrarSite(site);
-                          Rocha rocha1=new Rocha();
-                     rochaCtrl.cadastrarRocha(rocha1);
-                      break;
-                  default:
-                      break;
-              }
+        Rocha rocha = new Rocha(nome, tipo, dureza, corPrincipal, gem, siteEscolhido);
+        rochaCtrl.cadastrarRocha(rocha);
 
+        System.out.println("Rocha cadastrada com sucesso.");
     }
 
     public static void cadastrarMineral() {
         System.out.println("\n=== CADASTRAR MINERAL ===");
+        System.out.println("Onde foi encontrado o mineral?");
+        System.out.println("1 - Usar site existente");
+        System.out.println("2 - Cadastrar novo site");
+        System.out.print("Escolha: ");
+
+        int opcao = LER.nextInt();
+        LER.nextLine(); // limpar buffer
+
+        Site siteEscolhido = null;
+
+        if (opcao == 1) {
+            siteCtrl.listarSites();
+
+            System.out.print("Digite o ID do site existente: ");
+            int siteId = LER.nextInt();
+            LER.nextLine(); // limpar buffer
+
+            siteEscolhido = siteCtrl.selecionarSitePorID(siteId);
+
+            if (siteEscolhido == null) {
+                System.out.println("Site não encontrado.");
+                return;
+            }
+
+        } else if (opcao == 2) {
+            Site novoSite = new Site();
+            cadastrarSite(novoSite);
+            siteEscolhido = novoSite;
+
+        } else {
+            System.out.println("Opção inválida.");
+            return;
+        }
 
         System.out.print("Nome do mineral: ");
         String nome = LER.nextLine();
@@ -168,7 +211,7 @@ public class Main {
 
         System.out.print("Dureza (0-10): ");
         float dureza = LER.nextFloat();
-        LER.nextLine(); // limpar buffer
+        LER.nextLine();
 
         System.out.print("Cor: ");
         String cor = LER.nextLine();
@@ -179,28 +222,10 @@ public class Main {
         System.out.print("Toxicidade: ");
         String toxicidade = LER.nextLine();
 
-  System.out.println("\n=== CADASTRAR SITE DO MINERAL ===");
-  System.out.println("1 para site existente (selecione o sirte cadastrado. 2 para cadastrar site)");
-        switch (LER.nextInt()) {
-            case 1:
-                siteCtrl.listarSites();
-                System.out.print("Digite o ID do site existente: ");
-                Site x=new Site();
-                int siteId = LER.nextInt();
-                x= siteCtrl.selecionarSitePorID(siteId);
-                Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, x);
-                mineralCtrl.cadastrarMineral(mineral);
+        Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, siteEscolhido);
+        mineralCtrl.cadastrarMineral(mineral);
 
-                break;
-                case 2:
-                    Site site = new Site();
-                    cadastrarSite(site);
-                    Mineral mineral2 = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, site);
-                    mineralCtrl.cadastrarMineral(mineral2);
-                break;
-            default:
-                break;
-        }
+        System.out.println("Mineral cadastrado com sucesso.");
     }
 
     public static void cadastrarSite(Site site) {
