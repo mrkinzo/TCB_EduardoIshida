@@ -16,7 +16,7 @@ public class UserDAO {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getInstitution());
             stmt.setString(3, user.getRole());
-            stmt.executeUpdate();
+            stmt.executeBatch();
 
             // Obter o ID gerado
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {

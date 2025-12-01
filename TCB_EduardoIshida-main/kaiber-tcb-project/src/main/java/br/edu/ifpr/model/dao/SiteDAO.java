@@ -13,15 +13,15 @@ public class SiteDAO {
     }
 public void inserir(Site site) throws SQLException {
     String sql = "INSERT INTO site (nome, cidade, pais, propriedadeprivada) VALUES (?, ?, ?, ?)";
-    // ✅ Removido idsite do INSERT pois é AUTO_INCREMENT
-    // ✅ Corrigida a ordem dos parâmetros
-    
+   
     try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
         stmt.setString(1, site.getNome());
         stmt.setString(2, site.getCidade());
         stmt.setString(3, site.getPais());
         stmt.setString(4, site.getPropriedadeprivada());
-        stmt.executeUpdate();
+        stmt.executeBatch();
+
+         // Obter o ID gerado
 
         try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
             if (generatedKeys.next()) {

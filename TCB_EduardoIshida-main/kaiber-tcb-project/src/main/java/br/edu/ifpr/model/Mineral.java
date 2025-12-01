@@ -18,7 +18,7 @@ public class Mineral {
         this.site = site;
     }
 
-    // ✅ Construtor vazio
+    // Construtor vazio
     public Mineral() {
     }
 

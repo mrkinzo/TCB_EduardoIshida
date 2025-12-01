@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `Kyber`.`site` (
   `idsite` INT NOT NULL AUTO_INCREMENT,  
   `nome` VARCHAR(45) NOT NULL,
   `cidade` VARCHAR(45) NOT NULL,
+  `estado` VARCHAR(45) NOT NULL,
   `pais` VARCHAR(45) NOT NULL,
   `propriedadeprivada` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idsite`)

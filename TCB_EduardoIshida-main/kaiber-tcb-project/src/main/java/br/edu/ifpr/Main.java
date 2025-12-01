@@ -35,10 +35,10 @@ public class Main {
             System.out.println("\n----==== Bem vindo " + usuarioLogado.getName() + " ====----");
             exibirMenuPrincipal();
         } else {
-            System.out.println("Falha no registro do usuário!");
+            System.out.println(" Erro ao registrar usuário. Encerrando o sistema.");
         }
 
-        LER.close();
+       
     }
 
     public static void registrarUsuario() {
@@ -59,12 +59,9 @@ public class Main {
         // Cadastrar usuário
         usuarioCtrl.cadastrarUser(user);
 
-        if (user.getIduser() > 0) {
+      
             usuarioLogado = user;
-            System.out.println(". Registro realizado com sucesso!");
-        } else {
-            System.out.println(" Erro no registro. Tente novamente.");
-        }
+        
     }
 
     public static void exibirMenuPrincipal() {
@@ -72,16 +69,11 @@ public class Main {
             System.out.println("\n=== MENU PRINCIPAL ===");
             System.out.println("1 - Cadastrar Rocha");
             System.out.println("2 - Cadastrar Mineral");
-            System.out.println("3 - Cadastrar Site");
-            System.out.println("4 - Realizar Empréstimo");
-            System.out.println("5 - Listar Meus Empréstimos");
-            System.out.println("6 - Devolver Empréstimo");
-            System.out.println("7 - Consultar Minerais");
-            System.out.println("8 - Consultar Rochas");
-            System.out.println("9 - Consultar Sites");
-            System.out.println("10 - Buscar Minerais por Tipo");
-            System.out.println("11 - Buscar Rochas por Tipo");
-            System.out.println("12 - Informações do Usuário");
+            System.out.println("3 - Realizar Empréstimo");
+            System.out.println("4 - Listar Meus Empréstimos");
+            System.out.println("5 - Devolver emprestimo");
+            System.out.println("6 - Consultar Rochas");
+            System.out.println("7 - Consultar Rochas");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -139,7 +131,8 @@ public class Main {
         System.out.print("É gema? (true/false): ");
         boolean gem = LER.nextBoolean();
         LER.nextLine(); // limpar buffer
-        Site site = new Site(0, "", "", "", "");
+
+        Site site = new Site("", "", "", "", false);
         cadastrarSite(site);
 
         Rocha rocha = new Rocha(nome, tipo, dureza, corPrincipal, gem, site);
@@ -168,7 +161,7 @@ public class Main {
         System.out.print("Toxicidade: ");
         String toxicidade = LER.nextLine();
 
-        Site site = new Site(0, "", "", "", "");
+        Site site = new Site(0, "", "", "", "", false);
         cadastrarSite(site);
         Mineral mineral = new Mineral(nome, tipo, dureza, cor, brilho, toxicidade, site);
         mineralCtrl.cadastrarMineral(mineral);
@@ -183,11 +176,14 @@ public class Main {
         System.out.print("Cidade: ");
         site.setCidade(LER.nextLine());
 
+        System.out.print("Estado: ");
+        site.setEstado(LER.nextLine());
+
         System.out.print("País: ");
         site.setPais(LER.nextLine());
 
         System.out.print("Propriedade privada? (true/false): ");
-        site.setPropriedadeprivada(LER.nextBoolean() ? "Sim" : "Não");
+        site.setPropriedadeprivada(LER.nextBoolean());
         LER.nextLine(); // lim
         // Criar site
 

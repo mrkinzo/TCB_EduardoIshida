@@ -99,12 +99,12 @@ public class RochaDAO {
     private Rocha criarRochaFromResultSet(ResultSet rs) throws SQLException {
         // Criar objeto Site
         Site site = new Site(
-                rs.getString("site_nome"),
-                rs.getInt("site_idsite"),
-                rs.getString("site_pais"),
-                rs.getString("site_cidade"),
-                rs.getString("site_propriedadeprivada").equalsIgnoreCase("true"));
-
+            rs.getInt("site_idsite"),
+            rs.getString("site_nome"),
+            rs.getString("site_cidade"),
+            rs.getString("site_estado"),
+            rs.getString("site_pais"),
+            rs.getBoolean("site_propriedadeprivada"));
         // Criar e retornar Rocha
         return new Rocha(
                 rs.getInt("idRochas"),

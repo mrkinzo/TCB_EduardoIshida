@@ -1,34 +1,35 @@
 package br.edu.ifpr.model;
 
 public class Site {
+
     private int idsite;
     private String nome;
     private String cidade;
+    private String estado;
     private String pais;
-    private String propriedadeprivada;
+    private boolean propriedadeprivada; // "Sim" ou "Não"
 
-    public Site(String string, int aInt, String string1, String string2, boolean equalsIgnoreCase) {
-
-    }
-
-    // Construtor para SELECT
-    public Site(int idsite, String nome, String cidade, String pais, String propriedadeprivada) {
+    // Construtor usado no SELECT
+    public Site(int idsite, String nome, String cidade, String estado, String pais, boolean propriedadeprivada) {
         this.idsite = idsite;
         this.nome = nome;
         this.cidade = cidade;
+        this.estado = estado;
         this.pais = pais;
         this.propriedadeprivada = propriedadeprivada;
     }
 
-    // Construtor para RochaDAO
-    public Site(int idsite, String nome, String cidade, String pais, boolean propriedadePrivada) {
-        this.idsite = idsite;
+    // Construtor usado no RochaDAO INSERT
+    public Site(String nome, String cidade, String estado, String pais, boolean propriedadePrivada) {
+    
         this.nome = nome;
         this.cidade = cidade;
+        this.estado = estado;
         this.pais = pais;
-        this.propriedadeprivada = propriedadePrivada ? "Sim" : "Não";
+        this.propriedadeprivada = propriedadePrivada ;
     }
 
+    // Getters e Setters...
     public int getIdsite() {
         return idsite;
     }
@@ -53,6 +54,14 @@ public class Site {
         this.cidade = cidade;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public String getPais() {
         return pais;
     }
@@ -61,11 +70,11 @@ public class Site {
         this.pais = pais;
     }
 
-    public String getPropriedadeprivada() {
+    public boolean  getPropriedadeprivada() {
         return propriedadeprivada;
     }
 
-    public void setPropriedadeprivada(String propriedadeprivada) {
+    public void setPropriedadeprivada(boolean  propriedadeprivada) {
         this.propriedadeprivada = propriedadeprivada;
     }
 
@@ -75,6 +84,7 @@ public class Site {
                 "id=" + idsite +
                 ", nome='" + nome + '\'' +
                 ", cidade='" + cidade + '\'' +
+                ", estado='" + estado + '\'' +
                 ", pais='" + pais + '\'' +
                 ", propriedadePrivada='" + propriedadeprivada + '\'' +
                 '}';
