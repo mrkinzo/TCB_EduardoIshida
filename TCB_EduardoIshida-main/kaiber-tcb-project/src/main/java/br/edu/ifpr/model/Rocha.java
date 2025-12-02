@@ -91,7 +91,7 @@ public class Rocha {
         this.site = site;
     }
 
-    // ✅ Método auxiliar para obter o ID do site
+    //  Método auxiliar para obter o ID do site
     public int getSiteId() {
         return site != null ? site.getIdsite() : 0;
     }

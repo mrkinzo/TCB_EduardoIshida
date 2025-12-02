@@ -741,7 +741,6 @@ public class Main {
         System.out.println("\nTotal de itens: " + (minerais.size() + rochas.size()));
         System.out.println("\nObservações:");
         System.out.println("- Mantenha este comprovante para devolução");
-        System.out.println("- Multa por atraso: R$ 5,00 por dia");
         System.out.println("- Itens danificados deverão ser repostos");
         System.out.println("=================================");
     }

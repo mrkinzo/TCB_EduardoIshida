@@ -96,25 +96,32 @@ public class RochaDAO {
 
     // MÉTODOS AUXILIARES PRIVADOS
     private Rocha criarRochaFromResultSet(ResultSet rs) throws SQLException {
-        // Criar objeto Site
-        Site site = new Site(
-                rs.getInt("idsite"),
-                rs.getString("site_nome"),
-                rs.getString("site_cidade"),
-                rs.getString("site_estado"), // ← Certifique-se que este nome bate com o alias
-                rs.getString("site_pais"),
-                rs.getBoolean("site_propriedadeprivada"));
-
-        // Criar e retornar Rocha
-        return new Rocha(
-                rs.getInt("idRochas"),
-                rs.getString("nome"),
-                rs.getString("tipo"),
-                rs.getString("dureza"),
-                rs.getString("corPrincipal"),
-                rs.getBoolean("isitgem"),
-                site);
+    // Tente com e sem prefixo "site_"
+    String estado;
+    try {
+        estado = rs.getString("site_estado");
+    } catch (SQLException e) {
+        // Se não encontrar com prefixo, tenta sem
+        estado = rs.getString("estado");
     }
+    
+    Site site = new Site(
+        rs.getInt("site_idsite"),
+        rs.getString("site_nome"),
+        rs.getString("site_cidade"),
+        estado,  // ← Use o valor encontrado
+        rs.getString("site_pais"),
+        rs.getBoolean("site_propriedadeprivada"));
+    
+    return new Rocha(
+        rs.getInt("idRochas"),
+        rs.getString("nome"),
+        rs.getString("tipo"),
+        rs.getString("dureza"),
+        rs.getString("corPrincipal"),
+        rs.getBoolean("isitgem"),
+        site);
+}
 
     private List<Rocha> criarListaRochasFromResultSet(ResultSet rs) throws SQLException {
         List<Rocha> rochas = new ArrayList<>();

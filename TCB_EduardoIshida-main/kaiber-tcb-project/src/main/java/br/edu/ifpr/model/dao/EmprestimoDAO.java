@@ -14,10 +14,14 @@ public class EmprestimoDAO {
         this.conn = conn;
     }
 
+    static int userID;
+
     public int realizarEmprestimo(int userId, List<Mineral> minerais, List<Rocha> rochas) throws SQLException {
-        String sqlEmprestimo = "INSERT INTO emprestimo (dataEmp, dataDev, usuario_idusuario) VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), ?)";
-        String sqlMinerais = "INSERT INTO emprestimo_has_minerais (emprestimo_idemprestimo, emprestimo_usuario_idusuario, minerais_idminerais, minerais_site_idsite) VALUES (?, ?, ?, ?)";
-        String sqlRochas = "INSERT INTO emprestimo_has_Rochas (emprestimo_idemprestimo, emprestimo_usuario_idusuario, Rochas_idRochas, Rochas_site_idsite) VALUES (?, ?, ?, ?)";
+        String sqlEmprestimo = "INSERT INTO emprestimo (dataEmp, dataDev, usuario_iduser) VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), ?)";
+
+        String sqlMinerais = "INSERT INTO emprestimo_has_minerais (emprestimo_idemprestimo, minerais_idminerais) VALUES (?, ?)";
+
+        String sqlRochas = "INSERT INTO emprestimo_has_Rochas (emprestimo_idemprestimo, Rochas_idRochas) VALUES (?, ?)";
 
         try {
             conn.setAutoCommit(false);
@@ -31,48 +35,65 @@ public class EmprestimoDAO {
                 try (ResultSet rs = stmt.getGeneratedKeys()) {
                     if (rs.next()) {
                         emprestimoId = rs.getInt(1);
+                        System.out.println("DEBUG: Empréstimo criado com ID: " + emprestimoId);
                     } else {
                         throw new SQLException("Falha ao obter ID do empréstimo");
                     }
                 }
             }
 
-            // 2 — Inserir minerais
+            // 2 — Inserir minerais (se houver)
             if (minerais != null && !minerais.isEmpty()) {
+                System.out.println("DEBUG: Inserindo " + minerais.size() + " minerais no empréstimo");
+
                 try (PreparedStatement stmt = conn.prepareStatement(sqlMinerais)) {
                     for (Mineral m : minerais) {
                         stmt.setInt(1, emprestimoId);
-                        stmt.setInt(2, userId);
-                        stmt.setInt(3, m.getIdminerais());
-                        stmt.setString(4, String.valueOf(m.getSite().getIdsite())); // site_idsite é VARCHAR
+                        stmt.setInt(2, m.getIdminerais());
                         stmt.addBatch();
                     }
-                    stmt.executeBatch();
+                    int[] resultados = stmt.executeBatch();
+                    System.out.println("DEBUG: Minerais inseridos: " + resultados.length);
                 }
             }
 
-            // 3 — Inserir rochas
+            // 3 — Inserir rochas (se houver)
             if (rochas != null && !rochas.isEmpty()) {
+                System.out.println("DEBUG: Inserindo " + rochas.size() + " rochas no empréstimo");
+
                 try (PreparedStatement stmt = conn.prepareStatement(sqlRochas)) {
                     for (Rocha r : rochas) {
                         stmt.setInt(1, emprestimoId);
-                        stmt.setInt(2, userId);
-                        stmt.setInt(3, r.getIdRochas());
-                        stmt.setInt(4, r.getSite().getIdsite());
+                        stmt.setInt(2, r.getIdRochas());
                         stmt.addBatch();
                     }
-                    stmt.executeBatch();
+                    int[] resultados = stmt.executeBatch();
+                    System.out.println("DEBUG: Rochas inseridas: " + resultados.length);
                 }
             }
 
+            // 4 — Commit da transação
             conn.commit();
+            System.out.println("DEBUG: Transação commitada com sucesso!");
+
             return emprestimoId;
 
         } catch (SQLException e) {
-            conn.rollback();
-            throw e;
+            // Rollback em caso de erro
+            try {
+                conn.rollback();
+                System.err.println("DEBUG: Rollback realizado devido a erro: " + e.getMessage());
+            } catch (SQLException rollbackEx) {
+                System.err.println("ERRO ao fazer rollback: " + rollbackEx.getMessage());
+            }
+            throw e; // Re-lança a exceção
         } finally {
-            conn.setAutoCommit(true);
+            // Restaura auto-commit
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                System.err.println("ERRO ao restaurar auto-commit: " + e.getMessage());
+            }
         }
     }
 
@@ -89,7 +110,7 @@ public class EmprestimoDAO {
                     emp.setIdemprestimo(rs.getInt("idemprestimo"));
                     emp.setDataEmp(rs.getString("dataEmp"));
                     emp.setDataDev(rs.getString("dataDev"));
-                    emp.setUsuarioId(rs.getInt("usuario_idusuario"));
+                    emp.setUsuarioId(rs.getInt("usuario_iduser"));
                     return emp;
                 }
                 return null;
@@ -110,7 +131,7 @@ public class EmprestimoDAO {
                 emp.setIdemprestimo(rs.getInt("idemprestimo"));
                 emp.setDataEmp(rs.getString("dataEmp"));
                 emp.setDataDev(rs.getString("dataDev"));
-                emp.setUsuarioId(rs.getInt("usuario_idusuario"));
+                emp.setUsuarioId(rs.getInt("usuario_iduser"));
                 emprestimos.add(emp);
             }
         }
