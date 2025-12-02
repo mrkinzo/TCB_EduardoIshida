@@ -39,7 +39,7 @@ public class SiteController {
     public Site selecionarSitePorID(int idsite) {
         Site site = null;
         try {
-            site = siteDAO.selecionarPorID(idsite);  // TROCADO SiteDAO. por siteDAO.
+            site = siteDAO.selecionarPorID(idsite); 
         } catch (SQLException e) {
             System.err.println("Erro ao selecionar site por ID: " + e.getMessage());
             e.printStackTrace();

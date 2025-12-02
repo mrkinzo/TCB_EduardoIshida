@@ -8,7 +8,7 @@ import br.edu.ifpr.model.dao.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import br.edu.ifpr.*;
+
 
 public class EmprestimoController {
     private EmprestimoDAO emprestimoDAO;
