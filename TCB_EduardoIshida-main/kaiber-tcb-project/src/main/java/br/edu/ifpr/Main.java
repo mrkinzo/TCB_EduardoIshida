@@ -23,36 +23,58 @@ public class Main {
     private static EmprestimoController emprestimoCtrl = new EmprestimoController();
     private static SiteController siteCtrl = new SiteController();
 
-    private static User usuarioLogado;
+    static User usuarioLogado = null;
 
     public static void main(String[] args) {
         System.out.println("=== SISTEMA KYBER - GERENCIAMENTO GEOLÓGICO ===");
-        System.out.println("Usuário existente 1 para sim 2 para não");
-        User usuarioLogado = new User();
-        if (LER.nextInt() == 1) {
 
-            usuarioCtrl.listarUsers();
-            System.out.print("Digite o ID do seu usuário para login: ");
-            int userId = LER.nextInt();
-            usuarioLogado = usuarioCtrl.selecionarPorID(userId);
-            if (usuarioLogado != null) {
-                System.out.println("\n----==== Bem vindo " + usuarioLogado.getName() + " ====----");
-                exibirMenuPrincipal();
-            } else {
-                System.out.println(" Erro ao registrar usuário. Encerrando o sistema.");
+        while (usuarioLogado == null) {
+            System.out.println("\n=== LOGIN / REGISTRO ===");
+            System.out.println("1 - Fazer login (usuário existente)");
+            System.out.println("2 - Registrar novo usuário");
+            System.out.println("0 - Sair");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = LER.nextInt();
+            LER.nextLine(); // Limpar buffer
+
+            switch (opcao) {
+                case 1:
+                    fazerLogin();
+                    break;
+                case 2:
+                    registrarUsuario();
+                    break;
+                case 0:
+                    System.out.println("Saindo do sistema...");
+                    return;
+                default:
+                    System.out.println(" Opção inválida!");
             }
+        }
 
+        // Se chegou aqui, usuário está logado
+        System.out.println("\n----==== Bem vindo " + usuarioLogado.getName() + " ====----");
+        exibirMenuPrincipal();
+        LER.close();
+    }
+
+    public static void fazerLogin() {
+        System.out.println("\n=== LOGIN ===");
+
+        // Listar usuários existentes
+        usuarioCtrl.listarUsers();
+
+        System.out.print("\nDigite o ID do seu usuário para login: ");
+        int userId = LER.nextInt();
+        LER.nextLine(); // Limpar buffer
+
+        usuarioLogado = usuarioCtrl.selecionarPorID(userId);
+
+        if (usuarioLogado != null) {
+            System.out.println(" Login realizado com sucesso!");
         } else {
-            if (LER.nextInt() == 2) {
-                registrarUsuario();
-
-                if (usuarioLogado != null) {
-                    System.out.println("\n----==== Bem vindo " + usuarioLogado.getName() + " ====----");
-                    exibirMenuPrincipal();
-                } else {
-                    System.out.println(" Erro ao registrar usuário. Encerrando o sistema.");
-                }
-            }
+            System.out.println("Usuário não encontrado com ID: " + userId);
         }
     }
 
@@ -74,8 +96,12 @@ public class Main {
         // Cadastrar usuário
         usuarioCtrl.cadastrarUser(user);
 
-        usuarioLogado = user;
-
+        if (user.getIduser() > 0) {
+            usuarioLogado = user;
+            System.out.println("Registro realizado com sucesso! ID: " + user.getIduser());
+        } else {
+            System.out.println("Erro ao registrar usuário!");
+        }
     }
 
     public static void exibirMenuPrincipal() {
@@ -583,31 +609,39 @@ public class Main {
         System.out.println("\n=== REALIZAR EMPRÉSTIMO ===");
         System.out.println("Usuário: " + usuarioLogado.getName());
 
+        // Verificar se há itens disponíveis
+        List<Mineral> todosMinerais = mineralCtrl.listarTodosMinerais();
+        List<Rocha> todasRochas = rochaCtrl.listarTodasRochas();
+
+        if ((todosMinerais == null || todosMinerais.isEmpty()) &&
+                (todasRochas == null || todasRochas.isEmpty())) {
+            System.out.println(" Nenhum item cadastrado no sistema para empréstimo.");
+            return;
+        }
+
         // Listar minerais disponíveis
         System.out.println("\n--- MINERAIS DISPONÍVEIS ---");
-        List<Mineral> todosMinerais = mineralCtrl.listarTodosMinerais();
-
         if (todosMinerais == null || todosMinerais.isEmpty()) {
             System.out.println("Nenhum mineral cadastrado no sistema.");
         } else {
             for (Mineral mineral : todosMinerais) {
-                System.out.printf("ID: %d | %s | %s | Dureza: %.1f\n",
+                System.out.printf("ID: %d | %s | %s | Dureza: %.1f | Site: %s\n",
                         mineral.getIdminerais(), mineral.getNome(), mineral.getTipo(),
-                        mineral.getDureza());
+                        mineral.getDureza(),
+                        mineral.getSite() != null ? mineral.getSite().getNome() : "Nenhum");
             }
         }
 
         // Listar rochas disponíveis
         System.out.println("\n--- ROCHAS DISPONÍVEIS ---");
-        List<Rocha> todasRochas = rochaCtrl.listarTodasRochas();
-
         if (todasRochas == null || todasRochas.isEmpty()) {
             System.out.println("Nenhuma rocha cadastrada no sistema.");
         } else {
             for (Rocha rocha : todasRochas) {
-                System.out.printf("ID: %d | %s | %s | Cor: %s\n",
+                System.out.printf("ID: %d | %s | %s | Dureza: %s | Cor: %s | Site: %s\n",
                         rocha.getIdRochas(), rocha.getNome(), rocha.getTipo(),
-                        rocha.getCorPrincipal());
+                        rocha.getDureza(), rocha.getCorPrincipal(),
+                        rocha.getSite() != null ? rocha.getSite().getNome() : "Nenhum");
             }
         }
 
@@ -621,6 +655,95 @@ public class Main {
         } else {
             System.out.println(" Nenhum item selecionado. Empréstimo cancelado.");
         }
+    }
+
+    private static void confirmarERealizarEmprestimo(List<Mineral> minerais, List<Rocha> rochas) {
+        System.out.println("\n--- RESUMO DO EMPRÉSTIMO ---");
+        System.out.println("Usuário: " + usuarioLogado.getName() + " (ID: " + usuarioLogado.getIduser() + ")");
+        System.out.println("Data do empréstimo: " + java.time.LocalDate.now());
+        System.out.println("Data de devolução: " + java.time.LocalDate.now().plusDays(7));
+
+        if (!minerais.isEmpty()) {
+            System.out.println("\nMinerais (" + minerais.size() + "):");
+            for (Mineral m : minerais) {
+                System.out.println("  - " + m.getNome() +
+                        " (ID: " + m.getIdminerais() +
+                        ") | Site: " + (m.getSite() != null ? m.getSite().getNome() : "Nenhum"));
+            }
+        }
+
+        if (!rochas.isEmpty()) {
+            System.out.println("\nRochas (" + rochas.size() + "):");
+            for (Rocha r : rochas) {
+                System.out.println("  - " + r.getNome() +
+                        " (ID: " + r.getIdRochas() +
+                        ") | Site: " + (r.getSite() != null ? r.getSite().getNome() : "Nenhum"));
+            }
+        }
+
+        System.out.print("\nConfirmar empréstimo? (s/n): ");
+        String confirmacao = LER.nextLine().trim().toLowerCase();
+
+        if (confirmacao.equals("s")) {
+            try {
+                int emprestimoId = emprestimoCtrl.realizarEmprestimo(
+                        usuarioLogado.getIduser(),
+                        minerais,
+                        rochas);
+
+                if (emprestimoId > 0) {
+                    System.out.println("Empréstimo realizado com sucesso!");
+                    System.out.println("Número do empréstimo: " + emprestimoId);
+                    System.out.println("Data de devolução: " + java.time.LocalDate.now().plusDays(7));
+
+                    // Gerar comprovante
+                    gerarComprovanteEmprestimo(emprestimoId, minerais, rochas);
+                } else {
+                    System.out.println("Erro ao realizar empréstimo!");
+                }
+            } catch (Exception e) {
+                System.err.println(" Erro ao processar empréstimo: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Empréstimo cancelado.");
+        }
+    }
+
+    private static void gerarComprovanteEmprestimo(int emprestimoId, List<Mineral> minerais, List<Rocha> rochas) {
+        System.out.println("\n=== COMPROVANTE DE EMPRÉSTIMO ===");
+        System.out.println("Número: " + emprestimoId);
+        System.out.println("Usuário: " + usuarioLogado.getName());
+        System.out.println("Instituição: " + usuarioLogado.getInstitution());
+        System.out.println("Data: " + java.time.LocalDate.now());
+        System.out.println("Devolução até: " + java.time.LocalDate.now().plusDays(7));
+        System.out.println("\nItens emprestados:");
+
+        int contador = 1;
+        if (!minerais.isEmpty()) {
+            for (Mineral m : minerais) {
+                System.out.println(contador + ". Mineral: " + m.getNome() +
+                        " | Tipo: " + m.getTipo() +
+                        " | ID: " + m.getIdminerais());
+                contador++;
+            }
+        }
+
+        if (!rochas.isEmpty()) {
+            for (Rocha r : rochas) {
+                System.out.println(contador + ". Rocha: " + r.getNome() +
+                        " | Tipo: " + r.getTipo() +
+                        " | ID: " + r.getIdRochas());
+                contador++;
+            }
+        }
+
+        System.out.println("\nTotal de itens: " + (minerais.size() + rochas.size()));
+        System.out.println("\nObservações:");
+        System.out.println("- Mantenha este comprovante para devolução");
+        System.out.println("- Multa por atraso: R$ 5,00 por dia");
+        System.out.println("- Itens danificados deverão ser repostos");
+        System.out.println("=================================");
     }
 
     private static List<Mineral> selecionarMineraisPorID(List<Mineral> todosMinerais) {
@@ -653,45 +776,6 @@ public class Main {
         }
 
         return selecionados;
-    }
-
-    private static void confirmarERealizarEmprestimo(List<Mineral> minerais, List<Rocha> rochas) {
-        System.out.println("\n--- RESUMO DO EMPRÉSTIMO ---");
-        System.out.println("Usuário: " + usuarioLogado.getName() + " (ID: " + usuarioLogado.getIduser() + ")");
-
-        if (!minerais.isEmpty()) {
-            System.out.println("\nMinerais (" + minerais.size() + "):");
-            for (Mineral m : minerais) {
-                System.out.println("  - " + m.getNome() + " (ID: " + m.getIdminerais() + ")");
-            }
-        }
-
-        if (!rochas.isEmpty()) {
-            System.out.println("\nRochas (" + rochas.size() + "):");
-            for (Rocha r : rochas) {
-                System.out.println("  - " + r.getNome() + " (ID: " + r.getIdRochas() + ")");
-            }
-        }
-
-        System.out.print("\nConfirmar empréstimo? (s/n): ");
-        String confirmacao = LER.nextLine();
-
-        if (confirmacao.equalsIgnoreCase("s")) {
-            int emprestimoId = emprestimoCtrl.realizarEmprestimo(
-                    usuarioLogado.getIduser(),
-                    minerais,
-                    rochas);
-
-            if (emprestimoId > 0) {
-                System.out.println(". Empréstimo realizado com sucesso!");
-                System.out.println("Número do empréstimo: " + emprestimoId);
-                System.out.println("Data de devolução: 7 dias a partir de hoje");
-            } else {
-                System.out.println(" Erro ao realizar empréstimo!");
-            }
-        } else {
-            System.out.println("Empréstimo cancelado.");
-        }
     }
 
     public static void listarMeusEmprestimos() {

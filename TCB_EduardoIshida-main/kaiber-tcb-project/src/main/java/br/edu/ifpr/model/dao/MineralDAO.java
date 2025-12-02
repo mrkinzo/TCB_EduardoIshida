@@ -13,7 +13,7 @@ public class MineralDAO {
         this.conn = conn;
     }
 
-    //  INSERIR
+    // INSERIR
     public void inserir(Mineral mineral) throws SQLException {
         String sql = "INSERT INTO minerais (nome, tipo, dureza, cor, brilho, toxicidade, site_idsite) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -37,10 +37,9 @@ public class MineralDAO {
         }
     }
 
-
     // LISTAR TODOS
     public List<Mineral> ListarTodos() throws SQLException {
-         String sql = "SELECT * FROM minerais ORDER BY nome";
+        String sql = "SELECT * FROM minerais ORDER BY nome";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()) {
@@ -54,24 +53,24 @@ public class MineralDAO {
     }
 
     // ATUALIZAR - Atualiza mineral E seu site
-public void atualizar(Mineral mineral) throws SQLException {
-    String sql = "UPDATE minerais SET nome = ?, tipo = ?, dureza = ?, cor = ?, " +
-                 "brilho = ?, toxicidade = ?, site_idsite = ? WHERE idminerais = ?";
+    public void atualizar(Mineral mineral) throws SQLException {
+        String sql = "UPDATE minerais SET nome = ?, tipo = ?, dureza = ?, cor = ?, " +
+                "brilho = ?, toxicidade = ?, site_idsite = ? WHERE idminerais = ?";
 
-    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setString(1, mineral.getNome());
-        stmt.setString(2, mineral.getTipo());
-        stmt.setFloat(3, mineral.getDureza());
-        stmt.setString(4, mineral.getCor());
-        stmt.setString(5, mineral.getBrilho());
-        stmt.setString(6, mineral.getToxicidade());
-        stmt.setInt(7, mineral.getSite().getIdsite());  // ← AQUI ATUALIZA O SITE
-        stmt.setInt(8, mineral.getIdminerais());
-        
-        int linhasAfetadas = stmt.executeUpdate();
-        System.out.println("DEBUG: Atualização do mineral. Linhas afetadas: " + linhasAfetadas);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, mineral.getNome());
+            stmt.setString(2, mineral.getTipo());
+            stmt.setFloat(3, mineral.getDureza());
+            stmt.setString(4, mineral.getCor());
+            stmt.setString(5, mineral.getBrilho());
+            stmt.setString(6, mineral.getToxicidade());
+            stmt.setInt(7, mineral.getSite().getIdsite()); // ← AQUI ATUALIZA O SITE
+            stmt.setInt(8, mineral.getIdminerais());
+
+            int linhasAfetadas = stmt.executeUpdate();
+            System.out.println("DEBUG: Atualização do mineral. Linhas afetadas: " + linhasAfetadas);
+        }
     }
-}
 
     // DELETAR
     public void deletar(int id) throws SQLException {
@@ -100,41 +99,41 @@ public void atualizar(Mineral mineral) throws SQLException {
 
         return mineral;
     }
+
     public Mineral buscarPorId(int id) throws SQLException {
         String sql = "SELECT m.*, s.idsite, s.nome as site_nome, s.cidade, s.estado, s.pais, s.propriedadeprivada " +
-                     "FROM minerais m " +
-                     "LEFT JOIN site s ON m.site_idsite = s.idsite " +
-                     "WHERE m.idminerais = ?";
-    
+                "FROM minerais m " +
+                "LEFT JOIN site s ON m.site_idsite = s.idsite " +
+                "WHERE m.idminerais = ?";
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-    
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     // Criar Site COMPLETO com todos os dados
                     Site site = new Site(
-                        rs.getInt("idsite"),
-                        rs.getString("site_nome"),
-                        rs.getString("cidade"),
-                        rs.getString("estado"),
-                        rs.getString("pais"),
-                        rs.getBoolean("propriedadeprivada")
-                    );
-                    
+                            rs.getInt("idsite"),
+                            rs.getString("site_nome"),
+                            rs.getString("cidade"),
+                            rs.getString("estado"),
+                            rs.getString("pais"),
+                            rs.getBoolean("propriedadeprivada"));
+
                     // Criar Mineral com Site completo
                     return new Mineral(
-                        rs.getInt("idminerais"),
-                        rs.getString("nome"),
-                        rs.getString("tipo"),
-                        rs.getFloat("dureza"),
-                        rs.getString("cor"),
-                        rs.getString("brilho"),
-                        rs.getString("toxicidade"),
-                        site
-                    );
+                            rs.getInt("idminerais"),
+                            rs.getString("nome"),
+                            rs.getString("tipo"),
+                            rs.getFloat("dureza"),
+                            rs.getString("cor"),
+                            rs.getString("brilho"),
+                            rs.getString("toxicidade"),
+                            site);
                 }
                 return null;
             }
         }
     }
+
 }

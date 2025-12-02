@@ -15,8 +15,8 @@ public class ConnectionFactory {
       try {
          if (conexao == null) {
             String url = "jdbc:mysql://localhost:3306/Kyber";
-            String user = "aluno";
-            String password = "aluno";
+            String user = "root";
+            String password = "root";
             conexao = DriverManager.getConnection(url, user, password);
             System.out.println("conectado ao banco com sucesso!");
          }
