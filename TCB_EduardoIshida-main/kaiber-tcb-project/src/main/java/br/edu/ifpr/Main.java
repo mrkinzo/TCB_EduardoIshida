@@ -582,7 +582,7 @@ public class Main {
         System.out.println("Mineral cadastrado com sucesso.");
     }
 
-    public static void cadastrarSite(Site site) {
+        public static void cadastrarSite(Site site) {
         System.out.println("\n=== CADASTRAR SITE ===");
 
         System.out.print("Nome do site: ");
