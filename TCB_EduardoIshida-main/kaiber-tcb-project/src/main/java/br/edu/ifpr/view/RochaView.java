@@ -1,7 +1,8 @@
-package br.edu.ifpr.model.view;
+package br.edu.ifpr.view;
 
 import br.edu.ifpr.controller.RochaController;
 import br.edu.ifpr.controller.SiteController;
+import br.edu.ifpr.view.SiteView;
 import br.edu.ifpr.model.Rocha;
 import br.edu.ifpr.model.Site;
 import java.util.Scanner;
@@ -11,17 +12,17 @@ public class RochaView {
     private Scanner LER;
     private RochaController rochaCtrl;
     private SiteController siteCtrl;
-    private SiteView viewSite;
+    private SiteView SiteView;
 
-    public ViewRocha() {
+    public RochaView() {
         this.LER = new Scanner(System.in);
         this.rochaCtrl = new RochaController();
         this.siteCtrl = new SiteController();
-        this.viewSite = new SiteView();
+        this.SiteView = new SiteView();
     }
 
     public void cadastrarRocha() {
-        System.out.println("\n=== CADASTRAR ROCHA ===");
+        System.out.println(" === CADASTRAR ROCHA ===");
         System.out.println("Onde foi encontrada a rocha?");
         System.out.println("1 - Usar site existente");
         System.out.println("2 - Cadastrar novo site");
@@ -47,8 +48,8 @@ public class RochaView {
             }
 
         } else if (opcao == 2) {
-            siteEscolhido = viewSite.cadastrarSiteComRetorno();
-            
+            siteEscolhido = SiteView.cadastrarSiteComRetorno();
+
             if (siteEscolhido == null) {
                 System.out.println("Erro ao cadastrar site.");
                 return;
@@ -77,11 +78,11 @@ public class RochaView {
         Rocha rocha = new Rocha(nome, tipo, dureza, corPrincipal, gem, siteEscolhido);
         rochaCtrl.cadastrarRocha(rocha);
 
-        System.out.println(" Rocha cadastrada com sucesso.");
+        System.out.println("Rocha cadastrada com sucesso.");
     }
 
     public void consultarRochas() {
-        System.out.println("\n=== CONSULTAR ROCHAS ===");
+        System.out.println(" === CONSULTAR ROCHAS ===");
 
         List<Rocha> rochas = rochaCtrl.listarTodasRochas();
 
@@ -90,7 +91,7 @@ public class RochaView {
         } else {
             System.out.println("Total de rochas: " + rochas.size());
             for (Rocha rocha : rochas) {
-                System.out.printf("ID: %d | %s | %s | Dureza: %s | Cor: %s\n",
+                System.out.printf("ID: %d | %s | %s | Dureza: %s | Cor: %s ",
                         rocha.getIdRochas(), rocha.getNome(), rocha.getTipo(),
                         rocha.getDureza(), rocha.getCorPrincipal());
             }
@@ -98,84 +99,84 @@ public class RochaView {
     }
 
     public void atualizarRochas() {
-        System.out.println("\n=== ATUALIZAR ROCHA ===");
-        
+        System.out.println(" === ATUALIZAR ROCHA ===");
+
         List<Rocha> rochas = rochaCtrl.listarTodasRochas();
-        
+
         if (rochas == null || rochas.isEmpty()) {
             System.out.println("Nenhuma rocha cadastrada no sistema.");
             return;
         }
-        
+
         System.out.println("Rochas disponíveis para atualização:");
         for (Rocha rocha : rochas) {
             System.out.println(rocha.exibirDetalhes());
         }
-        
-        System.out.print("\nDigite o ID da rocha que deseja atualizar: ");
+
+        System.out.print(" Digite o ID da rocha que deseja atualizar: ");
         int rochaId = LER.nextInt();
         LER.nextLine();
-        
+
         Rocha rocha = rochaCtrl.buscarRochaPorId(rochaId);
-        
+
         if (rocha == null) {
             System.out.println("Rocha não encontrada com ID: " + rochaId);
             return;
         }
-        
-        System.out.println("\nRocha encontrada:");
+
+        System.out.println(" Rocha encontrada:");
         System.out.println(rocha.exibirDetalhes());
-        
+
         // Coletar novos dados
-        System.out.println("\nDigite os novos dados (ou Enter para manter o valor atual):");
-        
+        System.out.println(" Digite os novos dados (ou Enter para manter o valor atual):");
+
         System.out.print("Nome [" + rocha.getNome() + "]: ");
         String novoNome = LER.nextLine();
         if (!novoNome.trim().isEmpty()) {
             rocha.setNome(novoNome);
         }
-        
+
         System.out.print("Tipo [" + rocha.getTipo() + "]: ");
         String novoTipo = LER.nextLine();
         if (!novoTipo.trim().isEmpty()) {
             rocha.setTipo(novoTipo);
         }
-        
+
         System.out.print("Dureza [" + rocha.getDureza() + "]: ");
         String novaDureza = LER.nextLine();
         if (!novaDureza.trim().isEmpty()) {
             rocha.setDureza(novaDureza);
         }
-        
+
         System.out.print("Cor principal [" + rocha.getCorPrincipal() + "]: ");
         String novaCor = LER.nextLine();
         if (!novaCor.trim().isEmpty()) {
             rocha.setCorPrincipal(novaCor);
         }
-        
+
         System.out.print("É gema? [" + (rocha.isGem() ? "Sim" : "Não") + "] (true/false): ");
         String novaGemStr = LER.nextLine();
         if (!novaGemStr.trim().isEmpty()) {
             rocha.setGem(Boolean.parseBoolean(novaGemStr));
         }
-        
+
         // Atualizar site
-        System.out.println("\nDeseja alterar o site desta rocha?");
+        System.out.println(" Deseja alterar o site desta rocha?");
         System.out.println("1 - Manter site atual: " + rocha.getSite().getNome());
         System.out.println("2 - Alterar para outro site");
         System.out.print("Escolha: ");
-        
+
         int opcaoSite = LER.nextInt();
         LER.nextLine();
-        
+
         if (opcaoSite == 2) {
-            System.out.println("\nSites disponíveis:");
+            System.out.println(" Sites disponíveis:");
             siteCtrl.listarSites();
-            
+
             System.out.print("Digite o ID do novo site: ");
             int novoSiteId = LER.nextInt();
             LER.nextLine();
-            
+
             Site novoSite = siteCtrl.selecionarSitePorID(novoSiteId);
             if (novoSite != null) {
                 rocha.setSite(novoSite);
@@ -183,23 +184,23 @@ public class RochaView {
                 System.out.println("Site não encontrado. Mantendo site atual.");
             }
         }
-        
+
         // Confirmar
-        System.out.println("\n--- RESUMO DA ATUALIZAÇÃO ---");
+        System.out.println(" --- RESUMO DA ATUALIZAÇÃO ---");
         System.out.println(rocha.exibirDetalhes());
-        System.out.print("\nConfirmar atualização? (s/n): ");
-        
+        System.out.print(" Confirmar atualização? (s/n): ");
+
         String confirmacao = LER.nextLine();
         if (confirmacao.equalsIgnoreCase("s")) {
             rochaCtrl.atualizarRocha(rocha);
-            System.out.println(" Rocha atualizada com sucesso!");
+            System.out.println("Rocha atualizada com sucesso!");
         } else {
             System.out.println("Atualização cancelada.");
         }
     }
 
     public void apagarRochas() {
-        System.out.println("\n=== APAGAR ROCHAS ===");
+        System.out.println(" === APAGAR ROCHAS ===");
 
         List<Rocha> rochas = rochaCtrl.listarTodasRochas();
 
@@ -213,7 +214,7 @@ public class RochaView {
             System.out.println(rocha.exibirDetalhes());
         }
 
-        System.out.print("\nDigite o ID da rocha que deseja apagar: ");
+        System.out.print(" Digite o ID da rocha que deseja apagar: ");
         int rochaId = LER.nextInt();
         LER.nextLine();
 
@@ -224,11 +225,11 @@ public class RochaView {
             return;
         }
 
-        System.out.println("\nRocha encontrada:");
+        System.out.println(" Rocha encontrada:");
         System.out.println(rocha.exibirDetalhes());
 
         // Confirmar exclusão
-        System.out.print("\nConfirmar exclusão desta rocha? (s/n): ");
+        System.out.print(" Confirmar exclusão desta rocha? (s/n): ");
         String confirmacao = LER.nextLine();
         if (confirmacao.equalsIgnoreCase("s")) {
             rochaCtrl.deletarRocha(rochaId);

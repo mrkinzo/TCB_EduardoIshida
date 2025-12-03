@@ -1,19 +1,28 @@
-package br.edu.ifpr.model.view;
+package br.edu.ifpr.view;
 
 import br.edu.ifpr.controller.MineralController;
 import br.edu.ifpr.controller.SiteController;
 import br.edu.ifpr.model.Mineral;
 import br.edu.ifpr.model.Site;
+
 import java.util.Scanner;
 import java.util.List;
 
 public class MineralView {
-    private Scanner LER = new Scanner(System.in);
-    private MineralController mineralCtrl = new MineralController();
-    private SiteController siteCtrl = new SiteController();
+    private Scanner LER;
+    private MineralController mineralCtrl;
+    private SiteController siteCtrl;
+    private SiteView siteview;
+
+    public MineralView() {
+        this.LER = new Scanner(System.in);
+        this.mineralCtrl = new MineralController();
+        this.siteCtrl = new SiteController();
+        this.siteview = new SiteView();
+    }
 
     public void cadastrarMineral() {
-        System.out.println("\n=== CADASTRAR MINERAL ===");
+        System.out.println(" === CADASTRAR MINERAL ===");
         System.out.println("Onde foi encontrado o mineral?");
         System.out.println("1 - Usar site existente");
         System.out.println("2 - Cadastrar novo site");
@@ -39,9 +48,12 @@ public class MineralView {
             }
 
         } else if (opcao == 2) {
-            Site novoSite = new Site();
-            new SiteView().cadastrarSite(novoSite);
-            siteEscolhido = novoSite;
+            siteEscolhido = siteview.cadastrarSiteComRetorno();
+
+            if (siteEscolhido == null) {
+                System.out.println("Erro ao cadastrar site.");
+                return;
+            }
         } else {
             System.out.println("Opção inválida.");
             return;
@@ -73,7 +85,7 @@ public class MineralView {
     }
 
     public void consultarMinerais() {
-        System.out.println("\n=== CONSULTAR MINERAIS ===");
+        System.out.println(" === CONSULTAR MINERAIS ===");
 
         List<Mineral> minerais = mineralCtrl.listarTodosMinerais();
 
@@ -82,7 +94,7 @@ public class MineralView {
         } else {
             System.out.println("Total de minerais: " + minerais.size());
             for (Mineral mineral : minerais) {
-                System.out.printf("ID: %d | %s | %s | Dureza: %.1f | Cor: %s\n",
+                System.out.printf("ID: %d | %s | %s | Dureza: %.1f | Cor: %s ",
                         mineral.getIdminerais(), mineral.getNome(), mineral.getTipo(),
                         mineral.getDureza(), mineral.getCor());
             }
@@ -90,49 +102,49 @@ public class MineralView {
     }
 
     public void atualizarMinerais() {
-        System.out.println("\n=== ATUALIZAR MINERAL ===");
-        
+        System.out.println(" === ATUALIZAR MINERAIS ===");
+
         List<Mineral> minerais = mineralCtrl.listarTodosMinerais();
-        
+
         if (minerais == null || minerais.isEmpty()) {
             System.out.println("Nenhum mineral cadastrado no sistema.");
             return;
         }
-        
+
         System.out.println("Minerais disponíveis para atualização:");
         for (Mineral mineral : minerais) {
             System.out.println(mineral.exibirDetalhes());
         }
-        
-        System.out.print("\nDigite o ID do mineral que deseja atualizar: ");
+
+        System.out.print(" Digite o ID do mineral que deseja atualizar: ");
         int mineralId = LER.nextInt();
         LER.nextLine();
-        
+
         Mineral mineral = mineralCtrl.buscarMineralPorId(mineralId);
-        
+
         if (mineral == null) {
             System.out.println("Mineral não encontrado com ID: " + mineralId);
             return;
         }
-        
-        System.out.println("\nMineral encontrado:");
+
+        System.out.println(" Mineral encontrado:");
         System.out.println(mineral.exibirDetalhes());
-        
+
         // Coletar novos dados
-        System.out.println("\nDigite os novos dados (ou Enter para manter o valor atual):");
-        
+        System.out.println(" Digite os novos dados (ou Enter para manter o valor atual):");
+
         System.out.print("Nome [" + mineral.getNome() + "]: ");
         String novoNome = LER.nextLine();
         if (!novoNome.trim().isEmpty()) {
             mineral.setNome(novoNome);
         }
-        
+
         System.out.print("Tipo [" + mineral.getTipo() + "]: ");
         String novoTipo = LER.nextLine();
         if (!novoTipo.trim().isEmpty()) {
             mineral.setTipo(novoTipo);
         }
-        
+
         System.out.print("Dureza [" + mineral.getDureza() + "]: ");
         String novaDurezaStr = LER.nextLine();
         if (!novaDurezaStr.trim().isEmpty()) {
@@ -142,42 +154,42 @@ public class MineralView {
                 System.out.println("Valor inválido para dureza. Mantendo valor atual.");
             }
         }
-        
+
         System.out.print("Cor [" + mineral.getCor() + "]: ");
         String novaCor = LER.nextLine();
         if (!novaCor.trim().isEmpty()) {
             mineral.setCor(novaCor);
         }
-        
+
         System.out.print("Brilho [" + mineral.getBrilho() + "]: ");
         String novoBrilho = LER.nextLine();
         if (!novoBrilho.trim().isEmpty()) {
             mineral.setBrilho(novoBrilho);
         }
-        
+
         System.out.print("Toxicidade [" + mineral.getToxicidade() + "]: ");
         String novaToxicidade = LER.nextLine();
         if (!novaToxicidade.trim().isEmpty()) {
             mineral.setToxicidade(novaToxicidade);
         }
-        
+
         // Atualizar site
-        System.out.println("\nDeseja alterar o site deste mineral?");
+        System.out.println(" Deseja alterar o site deste mineral?");
         System.out.println("1 - Manter site atual: " + mineral.getSite().getNome());
         System.out.println("2 - Alterar para outro site");
         System.out.print("Escolha: ");
-        
+
         int opcaoSite = LER.nextInt();
         LER.nextLine();
-        
+
         if (opcaoSite == 2) {
-            System.out.println("\nSites disponíveis:");
+            System.out.println(" Sites disponíveis:");
             siteCtrl.listarSites();
-            
+
             System.out.print("Digite o ID do novo site: ");
             int novoSiteId = LER.nextInt();
             LER.nextLine();
-            
+
             Site novoSite = siteCtrl.selecionarSitePorID(novoSiteId);
             if (novoSite != null) {
                 mineral.setSite(novoSite);
@@ -185,18 +197,58 @@ public class MineralView {
                 System.out.println("Site não encontrado. Mantendo site atual.");
             }
         }
-        
+
         // Confirmar
-        System.out.println("\n--- RESUMO DA ATUALIZAÇÃO ---");
+        System.out.println(" --- RESUMO DA ATUALIZAÇÃO ---");
         System.out.println(mineral.exibirDetalhes());
-        System.out.print("\nConfirmar atualização? (s/n): ");
-        
+        System.out.print(" Confirmar atualização? (s/n): ");
+
         String confirmacao = LER.nextLine();
         if (confirmacao.equalsIgnoreCase("s")) {
             mineralCtrl.atualizarMineral(mineral);
             System.out.println("Mineral atualizado com sucesso!");
         } else {
             System.out.println("Atualização cancelada.");
+        }
+    }
+
+    public void apagarMinerais() {
+        System.out.println(" === APAGAR MINERAIS ===");
+
+        List<Mineral> minerais = mineralCtrl.listarTodosMinerais();
+
+        if (minerais == null || minerais.isEmpty()) {
+            System.out.println("Nenhum mineral cadastrado no sistema.");
+            return;
+        }
+
+        System.out.println("Minerais disponíveis para exclusão:");
+        for (Mineral mineral : minerais) {
+            System.out.println(mineral.exibirDetalhes());
+        }
+
+        System.out.print(" Digite o ID do mineral que deseja apagar: ");
+        int mineralId = LER.nextInt();
+        LER.nextLine();
+
+        Mineral mineral = mineralCtrl.buscarMineralPorId(mineralId);
+
+        if (mineral == null) {
+            System.out.println("Mineral não encontrado com ID: " + mineralId);
+            return;
+        }
+
+        System.out.println(" Mineral encontrado:");
+        System.out.println(mineral.exibirDetalhes());
+
+        // Confirmar exclusão
+        System.out.print(" Confirmar exclusão deste mineral? (s/n): ");
+        String confirmacao = LER.nextLine();
+        if (confirmacao.equalsIgnoreCase("s")) {
+            mineralCtrl.deletarMineral(mineralId);
+            System.out.println("Mineral apagado com sucesso!");
+        } else {
+            System.out.println("Exclusão cancelada.");
         }
     }
 }
